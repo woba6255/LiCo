@@ -6,6 +6,16 @@ export default defineConfig({
     main: {},
     preload: {},
     renderer: {
-        plugins: [react()]
+        plugins: [react()],
+        resolve: {
+            alias: {
+                app: '/src/app',
+                entities: '/src/entities',
+                features: '/src/features',
+                pages: '/src/pages',
+                shared: '/src/shared',
+                widgets: '/src/widgets',
+            },
+        },
     }
 });

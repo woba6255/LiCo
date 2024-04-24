@@ -1,54 +1,44 @@
-import { app, BrowserWindow } from "electron";
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { app, Tray, Menu, nativeImage } from "electron";
+import { mainWindow } from "./MainWindow.js";
 
+let tray = null;
 
-let mainWindow;
+function createTray() {
+    const icon = nativeImage.createFromPath("resources/icon.png")
+    tray = new Tray(icon)
 
-async function createWindow() {
-    mainWindow = new BrowserWindow({
-        show: false, // Use the 'ready-to-show' event to show the instantiated BrowserWindow.
-        webPreferences: {
-            nodeIntegration: false,
-            contextIsolation: true,
-            sandbox: false, // Sandbox disabled because the demo of preload script depend on the Node.js api
-            webviewTag: false, // The webview tag is not recommended. Consider alternatives like an iframe or Electron's BrowserView. @see https://www.electronjs.org/docs/latest/api/webview-tag#warning
-            preload: join(app.getAppPath(), 'out', 'preload', 'preload.mjs'),
-        }
+    const contextMenu = Menu.buildFromTemplate([
+        { label: "Show", click: () => mainWindow.show() },
+        { label: "Hide", click: () => mainWindow.hide() },
+        { label: "Quit", click: () => app.quit() }
+    ]);
+
+    tray.setToolTip("LiCo App")
+    tray.setTitle('LiCo App')
+    tray.setContextMenu(contextMenu)
+
+    tray.on("click", () => {
+        mainWindow.show()
     });
 
-
-    mainWindow.on('ready-to-show', () => {
-        mainWindow?.show();
-
-        if (import.meta.env.DEV) {
-            mainWindow?.webContents.openDevTools();
-        }
-    });
-
-    console.log(import.meta.env);
-
-    if (import.meta.env.DEV) {
-        await mainWindow.loadURL('http://localhost:5173');
-    } else {
-        await mainWindow.loadFile(
-            fileURLToPath(new URL('./../renderer/index.html', import.meta.url)),
-        );
-    }
-    mainWindow.on("closed", () => mainWindow = null);
+    return tray;
 }
-app.whenReady().then(() => {
-    createWindow();
-});
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
+app.whenReady().then(() => {
+    createTray()
+    mainWindow.create()
 });
 
 app.on("activate", () => {
-    if (mainWindow == null) {
-        createWindow();
+    if (!mainWindow.hasWindow) {
+        mainWindow.create()
     }
+});
+
+app.on("before-quit", () => {
+    mainWindow.prepareToQuit()
+});
+
+app.on("window-all-closed", () => {
+    app.quit()
 });

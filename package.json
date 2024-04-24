@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "main": "./out/main/main.js",
+  "author": "woba6255",
+  "description": "LiCo",
+  "license": "Apache-2.0",
   "scripts": {
     "electron:dev": "electron-vite dev -w",
     "electron:build-code": "electron-vite build",
@@ -18,7 +21,9 @@
     "@mui/material": "^5.15.15",
     "classnames": "^2.5.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router": "^6.23.0",
+    "react-router-dom": "^6.23.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -47,6 +52,7 @@
     },
     "files": [
       "out/**/*",
+      "resources/**/*",
       "node_modules/**/*"
     ],
     "win": {
