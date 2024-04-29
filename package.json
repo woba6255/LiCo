@@ -10,20 +10,27 @@
   "scripts": {
     "electron:dev": "electron-vite dev -w",
     "electron:build-code": "electron-vite build",
-    "electron:preview-code": "electron-vite preview",
+    "electron:preview": "electron-vite preview",
     "electron:build-app": "electron-builder build",
+    "electron:build": "electron-vite build && electron-builder build",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
+    "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
     "classnames": "^2.5.1",
+    "i18next": "^23.11.2",
+    "node-json-db": "2.3.0",
+    "observable-hooks": "^4.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^14.1.1",
     "react-router": "^6.23.0",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.0",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

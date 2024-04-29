@@ -1,0 +1,13 @@
+{
+  "values": ["ru", "en"],
+  "options": [
+    {
+      "value": "ru",
+      "label": "Русский"
+    },
+    {
+      "value": "en",
+      "label": "English"
+    }
+  ]
+}

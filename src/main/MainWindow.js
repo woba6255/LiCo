@@ -5,9 +5,9 @@ import { fileURLToPath } from "node:url";
 export class MainWindow {
     #browserWindow = null;
     #allowClose = false;
-    async create() {
+    async create(showWhenReady = true) {
         const mainWindow = new BrowserWindow({
-            show: false, // Use the 'ready-to-show' event to show the instantiated BrowserWindow.
+            show: false,
             autoHideMenuBar: true,
             webPreferences: {
                 nodeIntegration: false,
@@ -18,9 +18,10 @@ export class MainWindow {
             }
         });
 
-
         mainWindow.on('ready-to-show', () => {
-            mainWindow?.show();
+            if (showWhenReady) {
+                mainWindow.show();
+            }
 
             if (import.meta.env.DEV) {
                 mainWindow?.webContents.openDevTools();
@@ -30,7 +31,6 @@ export class MainWindow {
         mainWindow.on("close", (event) => {
             if (this.#allowClose === false) {
                 event.preventDefault();
-                console.log('Hiding window')
                 this.#browserWindow.hide();
             }
         });

@@ -1,10 +1,14 @@
 import { app, Tray, Menu, nativeImage } from "electron";
 import { mainWindow } from "./MainWindow.js";
+import { startOnLogin } from "./StartOnLogin.js";
+import { appStore } from "./store.ts";
 
 let tray = null;
 
 function createTray() {
-    const icon = nativeImage.createFromPath("resources/icon.png")
+    const icon = nativeImage.createFromPath(
+        `${app.getAppPath()}/resources/icon.png`
+    );
     tray = new Tray(icon)
 
     const contextMenu = Menu.buildFromTemplate([
@@ -24,9 +28,13 @@ function createTray() {
     return tray;
 }
 
-app.whenReady().then(() => {
+await appStore.onAppInit()
+
+app.whenReady().then(async () => {
+    const isHidden = process.argv.includes("--hidden")
+    await startOnLogin.onAppReady()
     createTray()
-    mainWindow.create()
+    await mainWindow.create(!isHidden)
 });
 
 app.on("activate", () => {
