@@ -1,4 +1,5 @@
-import { Drawer } from "./kit";
+import React from "react";
+import { UI } from "./kit";
 
 type SidebarProps = {
     children?: React.ReactNode;
@@ -8,7 +9,7 @@ type SidebarProps = {
 
 export function Sidebar({children, open, width}: SidebarProps) {
     return (
-        <Drawer
+        <UI.Drawer
             open={open}
             variant="persistent"
             anchor="right"
@@ -23,6 +24,6 @@ export function Sidebar({children, open, width}: SidebarProps) {
             }}
         >
             {children}
-        </Drawer>
+        </UI.Drawer>
     )
 }

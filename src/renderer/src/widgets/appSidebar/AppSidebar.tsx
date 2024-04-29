@@ -1,6 +1,6 @@
 import React from "react";
 import { useObservableEagerState } from "observable-hooks";
-import { Divider, IconButton, Icons, Sidebar, Toolbar } from "shared/ui";
+import { Icons, Sidebar, UI } from "shared/ui";
 import { isAppSidebarOpened$, toggleAppSidebar } from "entities/app";
 
 type SidebarProps = {
@@ -17,17 +17,17 @@ function AppSidebar({children}: SidebarProps) {
             open={isOpen}
             width={300}
         >
-            <Toolbar>
-                <IconButton
+            <UI.Toolbar>
+                <UI.IconButton
                     edge="end"
                     color="inherit"
                     aria-label="menu"
                     onClick={handleMenuClick}
                 >
                     <Icons.ChevronRight />
-                </IconButton>
-            </Toolbar>
-            <Divider />
+                </UI.IconButton>
+            </UI.Toolbar>
+            <UI.Divider />
             {children}
         </Sidebar>
     )

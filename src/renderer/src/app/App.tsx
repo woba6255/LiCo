@@ -1,12 +1,15 @@
+import { ThemeProvider } from "shared/ui";
 import { AppRouter } from "./AppRouter.tsx";
-import { ErrorBoundary } from "shared/ui";
+import { ErrorBoundary } from "shared/react";
 
 import './index.css'
 
 function App() {
   return (
       <ErrorBoundary>
-        <AppRouter />
+          <ThemeProvider>
+              <AppRouter />
+          </ThemeProvider>
       </ErrorBoundary>
   )
 }

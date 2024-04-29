@@ -3,8 +3,20 @@ import react from '@vitejs/plugin-react-swc'
 
 export default defineConfig({
     publicDir: false,
-    main: {},
-    preload: {},
+    main: {
+        resolve: {
+            alias: {
+                common: './../common',
+            },
+        }
+    },
+    preload: {
+        resolve: {
+            alias: {
+                common: './../common',
+            },
+        }
+    },
     renderer: {
         plugins: [react()],
         resolve: {
@@ -15,6 +27,7 @@ export default defineConfig({
                 pages: '/src/pages',
                 shared: '/src/shared',
                 widgets: '/src/widgets',
+                common: '/../common',
             },
         },
     }

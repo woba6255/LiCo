@@ -1,12 +1,13 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { BackendApi } from "../common/BackendApi";
+import { CHANNELS } from "common/Channels";
+import { BackendApi } from "common/BackendApi";
 
 const backendApi: BackendApi = {
     setShowOnLogin: (value) => {
-        ipcRenderer.send('set-start-on-login', value);
+        ipcRenderer.send(CHANNELS.SET_START_ON_LOGIN, value);
     },
     getShowOnLogin() {
-        return ipcRenderer.invoke('get-start-on-login');
+        return ipcRenderer.invoke(CHANNELS.GET_START_ON_LOGIN);
     },
 }
 

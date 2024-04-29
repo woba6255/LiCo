@@ -3,8 +3,21 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export class MainWindow {
-    #browserWindow = null;
-    #allowClose = false;
+    private _browserWindow: BrowserWindow | null = null;
+    private allowClose = false;
+
+    private get browserWindow() {
+        if (this._browserWindow === null) {
+            throw new Error('Browser window is not created, check _browserWindow property');
+        }
+
+        return this._browserWindow;
+    }
+
+    private set browserWindow(value: BrowserWindow) {
+        this._browserWindow = value;
+    }
+
     async create(showWhenReady = true) {
         const mainWindow = new BrowserWindow({
             show: false,
@@ -29,9 +42,9 @@ export class MainWindow {
         });
 
         mainWindow.on("close", (event) => {
-            if (this.#allowClose === false) {
+            if (!this.allowClose) {
                 event.preventDefault();
-                this.#browserWindow.hide();
+                this.browserWindow.hide();
             }
         });
 
@@ -43,25 +56,25 @@ export class MainWindow {
             );
         }
 
-        this.#browserWindow = mainWindow;
+        this.browserWindow = mainWindow;
 
         return mainWindow;
     }
 
     prepareToQuit() {
-        this.#allowClose = true;
+        this.allowClose = true;
     }
 
     hide() {
-        this.#browserWindow.hide();
+        this.browserWindow.hide();
     }
 
     show() {
-        this.#browserWindow.show();
+        this.browserWindow.show();
     }
 
     get hasWindow() {
-        return this.#browserWindow !== null;
+        return this._browserWindow !== null;
     }
 }
 
