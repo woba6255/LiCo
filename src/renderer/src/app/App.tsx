@@ -1,10 +1,10 @@
 import { ThemeProvider } from "shared/ui";
 import { ErrorBoundary } from "shared/react";
-import { AppRouter } from "./AppRouter.tsx";
+import { AppRouter } from "./AppRouter";
 
-import './index.css'
+import './app.css'
 
-function App() {
+export function App() {
   return (
       <ErrorBoundary>
           <ThemeProvider>
@@ -13,5 +13,3 @@ function App() {
       </ErrorBoundary>
   )
 }
-
-export default App

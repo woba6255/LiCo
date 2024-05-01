@@ -1,4 +1,3 @@
-import React from "react";
 import { Icons, UI } from "shared/ui";
 import { toggleSidebar } from "widgets/sidebar";
 

@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Routes } from "shared/routes";
-import { Tpg } from "shared/typography";
-import { UI } from "shared/ui";
+import { UI, Tpg } from "shared/ui";
 
 type NavigationTabsProps = {
     tabs: {

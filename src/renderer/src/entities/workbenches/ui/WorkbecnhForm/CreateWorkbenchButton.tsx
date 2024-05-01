@@ -3,8 +3,7 @@ import { useNavigate } from "react-router";
 import { useObservableEagerState } from "observable-hooks";
 import { useEventHandler } from "shared/react";
 import { detailedRoute, Routes } from "shared/routes";
-import { Tpg } from "shared/typography";
-import { Icons, UI } from "shared/ui";
+import { Icons, UI, Tpg } from "shared/ui";
 import { canSaveNewWorkbench$, createNewWorkbench } from "entities/workbenches";
 
 export function CreateWorkbenchButton() {
@@ -49,7 +48,7 @@ export function CreateWorkbenchButton() {
                 disabled={!canSave}
                 onClick={handleClick}
             >
-                <Icons.Save/>
+                <Icons.Save fontSize="small" />
                 <Tpg text="common.save" textTransform="none"/>
             </UI.Button>
         </>

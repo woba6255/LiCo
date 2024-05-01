@@ -1,1 +1,1 @@
-export * from './settingsStore.ts'
+export * from './settingsStore'

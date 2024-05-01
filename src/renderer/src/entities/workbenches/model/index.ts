@@ -1,2 +1,2 @@
-export * from './workbenchesSelectors.ts'
-export * from './workbenchesActions.ts'
+export * from './workbenchesSelectors'
+export * from './workbenchesActions'

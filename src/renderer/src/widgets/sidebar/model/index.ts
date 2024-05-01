@@ -1,1 +1,1 @@
-export * from './sidebarStore.ts'
+export * from './sidebarStore'

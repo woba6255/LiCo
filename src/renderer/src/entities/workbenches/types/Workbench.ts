@@ -1,4 +1,4 @@
-import { IWorkbench } from "common/Entities.ts";
+import { IWorkbench } from "common/Entities";
 
 export type Workbench = IWorkbench<false, true>;
 export type LocalWorkbench = IWorkbench<true, true>;

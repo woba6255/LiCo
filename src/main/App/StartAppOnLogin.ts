@@ -1,6 +1,6 @@
 import { app, ipcMain } from "electron";
-import { store } from "./store.ts";
-import { CHANNELS } from "common/Channels.ts";
+import { store } from "./store";
+import { CHANNELS } from "common/Channels";
 
 export class StartAppOnLogin {
     async onAppReady() {

@@ -1,1 +1,1 @@
-export * from './NavigationTabs.tsx';
+export * from './NavigationTabs';

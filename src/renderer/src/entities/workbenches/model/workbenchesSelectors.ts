@@ -1,5 +1,5 @@
 import { distinctUntilChanged, map } from "rxjs";
-import { workbenchesStore$ } from "./workbenchesStore.ts";
+import { workbenchesStore$ } from "./workbenchesStore";
 
 
 export const allWorkbenches$ = workbenchesStore$.pipe(

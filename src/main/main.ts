@@ -1,9 +1,9 @@
 import { app } from "electron";
-import { entitiesManager } from "./Entities/EntitiesManager.ts";
-import { appTray } from "./App/AppTray.ts";
-import { mainWindow } from "./App/MainWindow.ts";
-import { startAppOnLogin } from "./App/StartAppOnLogin.ts";
-import { appStore } from "./App/store.ts";
+import { entitiesManager } from "./Entities/EntitiesManager";
+import { appTray } from "./App/AppTray";
+import { mainWindow } from "./App/MainWindow";
+import { startAppOnLogin } from "./App/StartAppOnLogin";
+import { appStore } from "./App/store";
 
 await appStore.onAppInit()
 

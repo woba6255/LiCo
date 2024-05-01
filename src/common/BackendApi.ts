@@ -1,4 +1,4 @@
-import { IWorkbench } from "common/Entities.ts";
+import { IWorkbench } from "common/Entities";
 
 export type BackendApi = {
   getShowOnLogin: () => Promise<boolean>;

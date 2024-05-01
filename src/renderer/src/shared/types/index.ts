@@ -1,1 +1,1 @@
-export * from './utilitaryTypes.ts';
+export * from './utilitaryTypes';

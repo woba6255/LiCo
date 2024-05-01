@@ -1,7 +1,7 @@
-import { CHANNELS } from "common/Channels.ts";
-import { EventNodeType, IEventNode, ILinkableItem, IWorkbench, LinkableItemType } from "common/Entities.ts";
+import { CHANNELS } from "common/Channels";
+import { EventNodeType, IEventNode, ILinkableItem, IWorkbench, LinkableItemType } from "common/Entities";
 import { ipcMain } from "electron";
-import { InterfaceToType, store } from "../App/store.ts";
+import { InterfaceToType, store } from "../App/store";
 
 class EntitiesManager {
     public onAppReady() {

@@ -1,6 +1,5 @@
 import { useObservableEagerState } from "observable-hooks";
-import { Tpg } from "shared/typography";
-import { UI } from "shared/ui";
+import { UI, Tpg } from "shared/ui";
 import { isStartOnLoginEnabled$, toggleStartOnLogin } from "entities/settings";
 
 export function StartOnLoginSwitch() {

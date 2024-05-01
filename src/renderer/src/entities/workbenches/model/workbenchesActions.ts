@@ -1,7 +1,7 @@
 import { backendApi } from "shared/backendApi";
 import { uuid } from "shared/utils";
 import { Workbench } from "entities/workbenches";
-import { workbenchesStore$ } from "./workbenchesStore.ts";
+import { workbenchesStore$ } from "./workbenchesStore";
 
 
 export const setWorkbench = async (workbench: Workbench) => {

@@ -1,1 +1,1 @@
-export * from 'pages/root/RootPage.tsx'
+export * from './RootPage'

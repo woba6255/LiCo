@@ -1,6 +1,6 @@
 import React from "react";
 import { UIStyles } from "./kit";
-import { theme } from "./theme.ts";
+import { theme } from "./theme";
 
 type ThemeProviderProps = {
     children: React.ReactNode;
