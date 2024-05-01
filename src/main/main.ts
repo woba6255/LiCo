@@ -1,14 +1,16 @@
 import { app } from "electron";
-import { appTray } from "./AppTray.ts";
-import { mainWindow } from "./MainWindow.js";
-import { startOnLogin } from "./StartOnLogin.js";
-import { appStore } from "./store.ts";
+import { entitiesManager } from "./Entities/EntitiesManager.ts";
+import { appTray } from "./App/AppTray.ts";
+import { mainWindow } from "./App/MainWindow.ts";
+import { startAppOnLogin } from "./App/StartAppOnLogin.ts";
+import { appStore } from "./App/store.ts";
 
 await appStore.onAppInit()
 
 app.whenReady().then(async () => {
     const isHidden = process.argv.includes("--hidden")
-    await startOnLogin.onAppReady()
+    await startAppOnLogin.onAppReady()
+    entitiesManager.onAppReady()
     appTray.createTray({
         show: () => mainWindow.show(),
         hide: () => mainWindow.hide(),

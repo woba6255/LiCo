@@ -1,32 +1,62 @@
+import React from "react";
 import { Outlet, RouteObject } from "react-router-dom";
 import { reactLazyImport } from "shared/react";
-import { Layout } from "shared/ui";
-import { AppHeader } from "widgets/appHeader";
-import { AppSidebar } from "widgets/appSidebar";
-import { SettingsList } from "../widgets/settingsList/SettingsList.tsx";
+import { Routes } from "shared/routes";
+import { RootPage } from "pages/root";
 
 const HomePageLazy = reactLazyImport(
     () => import("./home"),
     'HomePage'
 )
 
+const TasksPageLazy = reactLazyImport(
+    () => import("./tasks"),
+    'TasksPage'
+)
+
+const CreateWorkbenchWidgetLazy = reactLazyImport(
+    () => import("widgets/workbenchEditor"),
+    'CreateWorkbenchWidget'
+)
+
 export const routes: RouteObject[] = [
     {
-        path: '/',
+        path: Routes.HOME,
         element: (
-            <Layout>
-                <AppHeader />
-                <AppSidebar>
-                    <SettingsList />
-                </AppSidebar>
-                <Outlet />
-            </Layout>
-
+            <RootPage>
+                <React.Suspense fallback={null}>
+                    <Outlet />
+                </React.Suspense>
+            </RootPage>
         ),
         children: [
             {
                 index: true,
-                element: <HomePageLazy />,
+                element: <HomePageLazy/>,
+            },
+            {
+                path: Routes.WORKBENCH,
+                element: (
+                    <TasksPageLazy>
+                        <React.Suspense fallback={null}>
+                            <Outlet />
+                        </React.Suspense>
+                    </TasksPageLazy>
+                ),
+                children: [
+                    {
+                        index: true,
+                        element: 404,
+                    },
+                    {
+                        path: Routes.NEW,
+                        element: <CreateWorkbenchWidgetLazy className="grow" />,
+                    },
+                    {
+                        path: Routes.DETAIL,
+                        element: 'DETAIL',
+                    }
+                ],
             },
         ],
     },

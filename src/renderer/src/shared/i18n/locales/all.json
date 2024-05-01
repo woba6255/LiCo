@@ -1,5 +1,9 @@
 {
-  "values": ["ru", "en"],
+  "values": [
+    "ru",
+    "en",
+    "tokens"
+  ],
   "options": [
     {
       "value": "ru",
@@ -8,6 +12,10 @@
     {
       "value": "en",
       "label": "English"
+    },
+    {
+      "value": "tokens",
+      "label": "DEV: Tokens"
     }
   ]
 }

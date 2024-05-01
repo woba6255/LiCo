@@ -6,7 +6,7 @@ export const theme = UIStyles.createTheme({
             main: '#16a085',
         },
         secondary: {
-            main: '#708090',
+            main: '#e2e8f0',
         },
     },
 });

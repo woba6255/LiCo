@@ -1,6 +1,6 @@
 import { ThemeProvider } from "shared/ui";
-import { AppRouter } from "./AppRouter.tsx";
 import { ErrorBoundary } from "shared/react";
+import { AppRouter } from "./AppRouter.tsx";
 
 import './index.css'
 

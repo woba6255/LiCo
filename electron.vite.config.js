@@ -6,14 +6,14 @@ export default defineConfig({
     main: {
         resolve: {
             alias: {
-                common: './../common',
+                common: '/src/common',
             },
         }
     },
     preload: {
         resolve: {
             alias: {
-                common: './../common',
+                common: '/src/common',
             },
         }
     },

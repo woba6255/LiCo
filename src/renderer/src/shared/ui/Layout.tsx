@@ -5,5 +5,17 @@ type Props = {
 };
 
 export function Layout({ children }: Props) {
-    return children;
+    return (
+        <div className="flex flex-col h-full w-full">
+            {children}
+        </div>
+    )
+}
+
+Layout.Body = function LayoutBody({ children }: Props) {
+    return (
+        <div className="flex overflow-auto h-full w-full">
+            {children}
+        </div>
+    )
 }

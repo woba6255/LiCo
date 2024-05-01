@@ -1,4 +1,6 @@
 {
     "settings.pickLanguage": "Choose language",
-    "settings.autoStart": "Start at login"
+    "settings.autoStart": "Start at login",
+    "navigation.home": "Home",
+    "navigation.workbench": "Workbench"
 }

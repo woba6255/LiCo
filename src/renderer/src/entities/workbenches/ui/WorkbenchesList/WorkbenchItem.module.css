@@ -1,0 +1,29 @@
+.item:hover .moreButton {
+    opacity: 1;
+}
+
+.moreButton {
+    padding: 0;
+    opacity: 0;
+    transition: opacity 0.13s ease-in;
+    position: absolute;
+    right: 0.5rem;
+    top: auto;
+    bottom: auto;
+}
+
+.moreButtonOpen {
+    opacity: 1;
+}
+
+.item {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.link {
+    flex: 1;
+}

@@ -1,4 +1,8 @@
 {
   "settings.pickLanguage": "Выберите язык",
-  "settings.autoStart": "Запускать при входе в систему"
+  "settings.autoStart": "Запускать при входе в систему",
+  "navigation.home": "Главная",
+  "navigation.workbench": "Управление задачами",
+  "common.save": "Сохранить",
+  "workbench.field.name": "Название"
 }

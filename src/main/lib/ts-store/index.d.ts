@@ -1,2 +1,2 @@
-export * from './store/index.js';
-export * from './Adapters/NodeJsonDBAdapter.js';
+export * from './store';
+export * from './Adapters/NodeJsonDBAdapter';
