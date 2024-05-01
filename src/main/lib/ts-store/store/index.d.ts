@@ -1,2 +1,2 @@
-export { TypedStoreAdapter } from "./TypedStoreAdapter.js";
-export { TypedStore } from "./TypedStore.js";
+export { TypedStoreAdapter } from "./TypedStoreAdapter";
+export { TypedStore } from "./TypedStore";

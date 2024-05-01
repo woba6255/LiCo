@@ -1,6 +1,6 @@
 import { Json } from "../json.types";
 import { TypedStoreAdapter } from "./TypedStoreAdapter";
-import { StateType, StoreType } from "./types.js";
+import { StateType, StoreType } from "./types";
 export declare class TypedStore<T extends StateType> {
     private readonly adapter;
     constructor(adapter: TypedStoreAdapter);

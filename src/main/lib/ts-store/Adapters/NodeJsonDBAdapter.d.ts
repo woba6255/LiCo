@@ -1,5 +1,5 @@
 import { Json } from "../json.types";
-import { TypedStoreAdapter } from "../store/TypedStoreAdapter.js";
+import { TypedStoreAdapter } from "../store/TypedStoreAdapter";
 export declare class NodeJsonDBAdapter implements TypedStoreAdapter {
     private db;
     constructor(fileName?: string, humanReadable?: boolean);

@@ -35,7 +35,7 @@ function getProxy(path, store) {
                 return store.set(pathToMethod, argArray[0]);
             }
             if (lastPath === 'delete') {
-                console.log('get', pathToMethod);
+                return store.delete(pathToMethod);
             }
             throw new Error(`Unknown method ${lastPath}`);
         }
