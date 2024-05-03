@@ -1,4 +1,4 @@
-import { UIStyles } from "./kit";
+import { UIStyles } from "../kit.ts";
 
 export const theme = UIStyles.createTheme({
     palette: {

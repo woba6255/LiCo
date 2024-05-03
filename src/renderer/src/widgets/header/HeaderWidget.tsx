@@ -1,7 +1,11 @@
 import React from "react";
-import { NavigationTabs } from "features/navigationTabs";
 import { Routes } from "shared/routes";
 import { UI } from "shared/ui";
+import { NavigationTabs } from "./NavigationTabs";
+
+type HeaderWidgetProps = {
+    children?: React.ReactNode;
+}
 
 const tabs = [{
     path: Routes.HOME,
@@ -11,11 +15,7 @@ const tabs = [{
     key: "navigation.workbench",
 }];
 
-type HeaderWidgetProps = {
-    toolbar?: React.ReactNode;
-}
-
-function HeaderWidget({ toolbar }: HeaderWidgetProps) {
+function HeaderWidget({ children }: HeaderWidgetProps) {
     return (
         <UI.AppBar
             position="static"
@@ -26,7 +26,7 @@ function HeaderWidget({ toolbar }: HeaderWidgetProps) {
                     LiCo
                 </UI.Typography>
                 <NavigationTabs tabs={tabs} />
-                {toolbar}
+                {children}
             </UI.Toolbar>
         </UI.AppBar>
     );

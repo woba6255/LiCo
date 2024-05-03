@@ -1,5 +1,5 @@
 import { Icons, UI } from "shared/ui";
-import { toggleSidebar } from "widgets/sidebar";
+import { toggleSidebar } from "../model";
 
 export function SidebarCogButton() {
     const handleMenuClick = toggleSidebar

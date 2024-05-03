@@ -1,6 +1,7 @@
 import { useObservableEagerState } from "observable-hooks";
 import { UI } from "shared/ui";
-import { allWorkbenches$, WorkbenchItem } from "entities/workbenches";
+import { allWorkbenches$ } from "../../model";
+import { WorkbenchItem } from "./WorkbenchItem.tsx";
 
 export function WorkbenchesList() {
     const workbenches = useObservableEagerState(allWorkbenches$);

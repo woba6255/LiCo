@@ -1,10 +1,13 @@
 import React from "react";
 import { useObservableEagerState } from "observable-hooks";
 import { Icons, Sidebar, UI } from "shared/ui";
-import { isSidebarOpened$, toggleSidebar } from "widgets/sidebar";
-import { SettingsList } from "entities/settings";
+import { isSidebarOpened$, toggleSidebar } from "../model";
 
-function SidebarWidget() {
+type SidebarWidgetProps = {
+    children?: React.ReactNode;
+}
+
+function SidebarWidget({ children }: SidebarWidgetProps) {
     const isOpen = useObservableEagerState(isSidebarOpened$)
 
     const handleMenuClick = toggleSidebar
@@ -26,7 +29,7 @@ function SidebarWidget() {
                 </UI.IconButton>
             </UI.Toolbar>
             <UI.Divider />
-            <SettingsList />
+            {children}
         </Sidebar>
     )
 }

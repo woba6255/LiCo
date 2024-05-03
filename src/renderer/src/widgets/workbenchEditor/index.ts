@@ -1,1 +1,1 @@
-export * from './CreateWorkbenchWidget'
+export * from './WorkbenchEditorWidget.tsx'

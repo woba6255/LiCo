@@ -1,6 +1,5 @@
-import { distinctUntilChanged, map } from "rxjs";
+import { distinctUntilChanged, map, Observable, zip } from "rxjs";
 import { workbenchesStore$ } from "./workbenchesStore";
-
 
 export const allWorkbenches$ = workbenchesStore$.pipe(
     map(state => state.allWorkbenches),
@@ -8,12 +7,10 @@ export const allWorkbenches$ = workbenchesStore$.pipe(
     map(allWorkbenches => Object.values(allWorkbenches))
 );
 
-export const newWorkbenchName$ = workbenchesStore$.pipe(
-    map(state => state.newWorkbench?.name),
-    distinctUntilChanged(),
-);
-
-export const canSaveNewWorkbench$ = workbenchesStore$.pipe(
-    map(state => !!state.newWorkbench?.name),
-    distinctUntilChanged(),
+export const getWorkbenchById$ = (idObservable: Observable<string>) => zip(
+    workbenchesStore$,
+    idObservable
+).pipe(
+    map(([state, id]) => state.allWorkbenches[id]),
+    distinctUntilChanged()
 );

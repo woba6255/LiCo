@@ -1,15 +1,26 @@
 import React from "react";
+import { distinctUntilChanged, map } from "rxjs";
 import { useObservableEagerState } from "observable-hooks";
 import { useTranslation } from "shared/i18n";
 import { useEventHandler } from "shared/react";
 import { UI } from "shared/ui";
-import { newWorkbenchName$, setNewWorkbenchName } from "entities/workbenches";
+import { useWorkbenchForm } from "../../react";
 
 export function WorkbenchNameField() {
     const { t } = useTranslation();
-    const name = useObservableEagerState(newWorkbenchName$);
+    const { editableWorkbench$, setWorkbench } = useWorkbenchForm();
+
+    const name$ = React.useMemo(() => editableWorkbench$.pipe(
+        map(workbench => workbench?.name),
+        distinctUntilChanged(),
+    ), [editableWorkbench$]);
+
+    const name = useObservableEagerState(name$);
+
     const handleChange = useEventHandler((e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewWorkbenchName(e.target.value ?? "");
+        setWorkbench({
+            name: e.target.value,
+        })
     });
 
     return (

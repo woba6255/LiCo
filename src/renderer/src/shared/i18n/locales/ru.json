@@ -4,5 +4,10 @@
   "navigation.home": "Главная",
   "navigation.workbench": "Управление задачами",
   "common.save": "Сохранить",
-  "workbench.field.name": "Название"
+  "common.delete": "Удалить",
+  "common.edit": "Редактировать",
+  "common.saved": "Сохранено",
+  "workbench.field.name": "Название",
+  "workbench.form.create": "Создание задачи",
+  "workbench.form.edit": "Редактирование задачи"
 }

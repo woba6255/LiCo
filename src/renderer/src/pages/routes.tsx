@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, RouteObject } from "react-router-dom";
 import { reactLazyImport } from "shared/react";
 import { Routes } from "shared/routes";
-import { RootPage } from "pages/root";
+import { RootPage } from "./root";
 
 const HomePageLazy = reactLazyImport(
     () => import("./home"),
@@ -14,9 +14,9 @@ const TasksPageLazy = reactLazyImport(
     'TasksPage'
 )
 
-const CreateWorkbenchWidgetLazy = reactLazyImport(
+const WorkbenchEditorWidgetLazy = reactLazyImport(
     () => import("widgets/workbenchEditor"),
-    'CreateWorkbenchWidget'
+    'WorkbenchEditorWidget'
 )
 
 export const routes: RouteObject[] = [
@@ -49,12 +49,16 @@ export const routes: RouteObject[] = [
                         element: 404,
                     },
                     {
+                        path: `${Routes.DETAIL}/${Routes.NODE_EDITOR}`,
+                        element: 'NODE_EDITOR',
+                    },
+                    {
                         path: Routes.NEW,
-                        element: <CreateWorkbenchWidgetLazy className="grow" />,
+                        element: <WorkbenchEditorWidgetLazy className="grow" />,
                     },
                     {
                         path: Routes.DETAIL,
-                        element: 'DETAIL',
+                        element: <WorkbenchEditorWidgetLazy className="grow" />,
                     }
                 ],
             },

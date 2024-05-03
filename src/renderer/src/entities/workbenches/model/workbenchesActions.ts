@@ -1,11 +1,23 @@
 import { backendApi } from "shared/backendApi";
 import { uuid } from "shared/utils";
-import { Workbench } from "entities/workbenches";
+import { LocalWorkbench, Workbench } from "../types";
 import { workbenchesStore$ } from "./workbenchesStore";
 
 
-export const setWorkbench = async (workbench: Workbench) => {
+export const setWorkbench = async (workbenchArg: Workbench | LocalWorkbench) => {
     const currentState = workbenchesStore$.getValue();
+
+    let workbench: Workbench;
+
+    if (workbenchArg.id) {
+        workbench = workbenchArg as Workbench;
+    } else {
+        workbench = {
+            ...workbenchArg,
+            id: uuid(),
+        }
+    }
+
     workbenchesStore$.next({
         ...currentState,
         allWorkbenches: {
@@ -15,53 +27,7 @@ export const setWorkbench = async (workbench: Workbench) => {
     });
 
     await backendApi.setWorkbench(workbench);
-}
-
-export const createWorkbench = async (name: string) => {
-    const newWorkbench: Workbench = {
-        id: uuid(),
-        name,
-        description: "",
-        status: "idle",
-        nodes: [],
-        linkableItems: [],
-        entryPoints: []
-    }
-
-    await setWorkbench(newWorkbench);
-
-    return newWorkbench;
-}
-
-export const setNewWorkbenchName = (name: string) => {
-    const currentState = workbenchesStore$.getValue();
-    workbenchesStore$.next({
-        ...currentState,
-        newWorkbench: {
-            name,
-        }
-    });
-}
-
-export const clearNewWorkbench = () => {
-    const currentState = workbenchesStore$.getValue();
-    workbenchesStore$.next({
-        ...currentState,
-        newWorkbench: undefined,
-    });
-}
-
-export const createNewWorkbench = async () => {
-    const currentState = workbenchesStore$.getValue();
-    const newWorkbench = currentState.newWorkbench;
-
-    if (newWorkbench) {
-        const workbench = await createWorkbench(newWorkbench.name);
-        clearNewWorkbench();
-        return workbench;
-    } else {
-        throw new Error("Object not defined");
-    }
+    return workbench;
 }
 
 export const deleteWorkbench = async (id: string) => {

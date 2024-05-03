@@ -1,5 +1,6 @@
-import { SelectLocale, StartOnLoginSwitch } from "entities/settings";
 import { UI } from "shared/ui";
+import { SelectLocale } from "./SelectLocale.tsx";
+import { StartOnLoginSwitch } from "./StartOnLoginSwitch.tsx";
 
 
 export function SettingsList() {

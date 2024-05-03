@@ -1,8 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { detailedRoute, Routes } from "shared/routes";
-import { Icons, UI, cn } from "shared/ui";
-import { deleteWorkbench, Workbench } from "entities/workbenches";
+import { cn, Icons, UI } from "shared/ui";
+import { Workbench } from "../../types";
+import { WorkbenchItemMenu } from "./WorkbenchItemMenu";
+
 import styles from "./WorkbenchItem.module.css";
 
 type WorkbenchItemProps = {
@@ -21,10 +23,6 @@ export function WorkbenchItem({ workbench }: WorkbenchItemProps) {
         setAnchorEl(null);
     };
 
-    const handleDelete = () => {
-        deleteWorkbench(workbench.id);
-    }
-
     return (
         <UI.ListItem
             className={styles.item}
@@ -32,7 +30,7 @@ export function WorkbenchItem({ workbench }: WorkbenchItemProps) {
         >
             <NavLink
                 className={styles.link}
-                to={detailedRoute(Routes.WORKBENCH_DETAIL, workbench.id)}
+                to={detailedRoute(Routes.WORKBENCH_NODE_EDITOR, workbench.id)}
             >
                 {workbench.name}
             </NavLink>
@@ -40,29 +38,16 @@ export function WorkbenchItem({ workbench }: WorkbenchItemProps) {
             <UI.IconButton
                 color="primary"
                 className={cn(styles.moreButton, isMenuOpen && styles.moreButtonOpen)}
-                aria-controls="long-menu"
-                aria-haspopup="true"
                 onClick={handleMenu}
             >
                 <Icons.MoreVert/>
             </UI.IconButton>
-            <UI.Menu
-                id="long-menu"
+            <WorkbenchItemMenu
+                workbench={workbench}
                 anchorEl={anchorEl}
-                keepMounted
-                open={isMenuOpen}
                 onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-            >
-                <UI.MenuItem onClick={handleDelete}>Delete</UI.MenuItem>
-            </UI.Menu>
+            />
         </UI.ListItem>
     );
 }
+
