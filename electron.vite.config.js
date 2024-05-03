@@ -7,6 +7,7 @@ export default defineConfig({
         resolve: {
             alias: {
                 common: '/src/common',
+                main: '/src/main',
             },
         }
     },
@@ -14,6 +15,7 @@ export default defineConfig({
         resolve: {
             alias: {
                 common: '/src/common',
+                main: '/src/main',
             },
         }
     },

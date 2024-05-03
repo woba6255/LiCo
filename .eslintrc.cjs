@@ -1,12 +1,13 @@
 module.exports = {
     root: true,
-    env: {browser: true, es2020: true, node: true},
+    env: { browser: true, es2020: true, node: true },
     extends: [
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:react-hooks/recommended',
+        '@feature-sliced',
     ],
-    ignorePatterns: ['dist', '.eslintrc.cjs', '.svg'],
+    ignorePatterns: ['dist', '.eslintrc.cjs', '.svg', '*/**/lib/**/*', 'out', 'node_modules'],
     parser: '@typescript-eslint/parser',
     plugins: ['react-refresh'],
     rules: {
@@ -31,11 +32,26 @@ module.exports = {
                 message: "Use shared/i18n instead."
             }]
         }],
+        "@typescript-eslint/no-explicit-any": "off",
     },
     overrides: [{
         files: ["*/**/shared/**/*", "*/**/app/**/*"],
         rules: {
             "no-restricted-imports": "off"
         }
-    }]
+    }, {
+        files: ["*"],
+        rules: {
+            "import/order": [
+                "error",
+                {
+                    "pathGroups": [{
+                        "pattern": "electron",
+                        "group": "builtin",
+                        "position": "after"
+                    }]
+                }
+            ]
+        }
+    }],
 }

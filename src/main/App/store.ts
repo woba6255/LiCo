@@ -1,8 +1,8 @@
 import * as path from "node:path";
 import { app } from "electron";
-import { NodeJsonDBAdapter, TypedStore } from "../lib/ts-store";
-import { JsonValue } from "../lib/ts-store/json.types";
 import { IWorkbench } from "common/Entities";
+import { NodeJsonDBAdapter, TypedStore } from "main/lib/ts-store";
+import { JsonValue } from "main/lib/ts-store/json.types";
 
 type State = {
     isInitialized: boolean;

@@ -13,7 +13,7 @@
     "electron:build-app": "electron-builder build",
     "electron:preview": "electron-vite preview",
     "electron:build": "electron-vite build && electron-builder build",
-    "lint": "eslint --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint .",
     "clear": "rimraf out build"
   },
   "dependencies": {
@@ -36,6 +36,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@feature-sliced/eslint-config": "^0.1.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/uuid": "^9.0.8",
@@ -47,6 +48,8 @@
     "electron-builder": "^24.13.3",
     "electron-vite": "^2.1.0",
     "eslint": "^8.57.0",
+    "eslint-plugin-boundaries": "^4.2.0",
+    "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "postcss": "^8.4.38",

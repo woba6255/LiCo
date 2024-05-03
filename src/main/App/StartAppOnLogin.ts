@@ -1,6 +1,6 @@
 import { app, ipcMain } from "electron";
-import { store } from "./store";
 import { CHANNELS } from "common/Channels";
+import { store } from "./store";
 
 export class StartAppOnLogin {
     async onAppReady() {

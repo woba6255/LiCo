@@ -1,6 +1,6 @@
-import { app, BrowserWindow } from "electron";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { app, BrowserWindow } from "electron";
 
 export class MainWindow {
     private _browserWindow: BrowserWindow | null = null;
