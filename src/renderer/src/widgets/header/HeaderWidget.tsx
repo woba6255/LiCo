@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes } from "shared/routes";
+import { PossibleRoutes } from "shared/routes";
 import { UI } from "shared/ui";
 import { NavigationTabs } from "./NavigationTabs";
 
@@ -8,10 +8,10 @@ type HeaderWidgetProps = {
 }
 
 const tabs = [{
-    path: Routes.HOME,
+    path: PossibleRoutes.HOME,
     key: "navigation.home",
 }, {
-    path: Routes.WORKBENCH,
+    path: PossibleRoutes.WORKBENCH,
     key: "navigation.workbench",
 }];
 

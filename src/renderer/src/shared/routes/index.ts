@@ -1,2 +1,2 @@
-export * from './Routes';
-export * from 'shared/routes/detailedRoute';
+export * from './PossibleRoutes.ts';
+export * from './detailedRoute';

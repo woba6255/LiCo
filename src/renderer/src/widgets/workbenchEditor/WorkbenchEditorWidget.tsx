@@ -5,7 +5,7 @@ import { useEventHandler } from "shared/react";
 import { DividedLayout, Tpg, UI, toaster } from "shared/ui";
 import { getWorkbenchById$, LocalWorkbench, setWorkbench, Workbench } from "entities/workbenches";
 import { SaveWorkbenchButton, WorkbenchForm, WorkbenchFormProvider } from "features/workbenchForm";
-import { detailedRoute, Routes } from "shared/routes";
+import { detailedRoute, PossibleRoutes } from "shared/routes";
 import { of } from "rxjs";
 
 type CreateWorkbenchWidgetProps = {
@@ -28,7 +28,7 @@ function WorkbenchEditorWidget({ className }: CreateWorkbenchWidgetProps) {
     const onSave = useEventHandler(async (workbench: Workbench | LocalWorkbench) => {
         try {
             const { id } = await setWorkbench(workbench)
-            navigate(detailedRoute(Routes.WORKBENCH_NODE_EDITOR, id))
+            navigate(detailedRoute(PossibleRoutes.WORKBENCH_NODE_EDITOR, id))
             toaster.info("common.saved");
         } catch (error) {
             if (error instanceof Error) {

@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { Routes } from "shared/routes";
+import { PossibleRoutes } from "shared/routes";
 import { UI, Tpg } from "shared/ui";
 
 type NavigationTabsProps = {
     tabs: {
         key: string;
-        path: Routes;
+        path: PossibleRoutes;
     }[];
 }
 

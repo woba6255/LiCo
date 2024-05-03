@@ -1,1 +1,1 @@
-export * from './TasksPage';
+export * from './TasksPageRouter';

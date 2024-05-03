@@ -1,14 +1,14 @@
 import React from "react";
-import { Layout } from "shared/ui";
-import { SettingsList } from "features/settings";
 import { HeaderWidget } from "widgets/header";
-import { SidebarWidget, SidebarCogButton } from "widgets/sidebar";
+import { SidebarCogButton, SidebarWidget } from "widgets/sidebar";
+import { SettingsList } from "features/settings";
+import { Layout } from "shared/ui";
 
 type RootPageProps = {
     children: React.ReactNode;
 }
 
-export function RootPage({children}: RootPageProps) {
+export function RootPage({ children }: RootPageProps) {
     return (
         <Layout>
             <HeaderWidget>

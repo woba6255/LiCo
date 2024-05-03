@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { detailedRoute, Routes } from "shared/routes";
+import { detailedRoute, PossibleRoutes } from "shared/routes";
 import { cn, Icons, UI } from "shared/ui";
 import { Workbench } from "../../types";
 import { WorkbenchItemMenu } from "./WorkbenchItemMenu";
@@ -30,7 +30,7 @@ export function WorkbenchItem({ workbench }: WorkbenchItemProps) {
         >
             <NavLink
                 className={styles.link}
-                to={detailedRoute(Routes.WORKBENCH_NODE_EDITOR, workbench.id)}
+                to={detailedRoute(PossibleRoutes.WORKBENCH_NODE_EDITOR, workbench.id)}
             >
                 {workbench.name}
             </NavLink>

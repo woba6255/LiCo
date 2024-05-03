@@ -1,5 +1,5 @@
-import { Routes } from "shared/routes";
+import { PossibleRoutes } from "shared/routes";
 
-export function detailedRoute(route: Routes, id: string) {
-    return route.replace(Routes.DETAIL, id);
+export function detailedRoute(route: PossibleRoutes, id: string) {
+    return route.replace(PossibleRoutes.DETAIL, id);
 }

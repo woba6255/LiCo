@@ -1,5 +1,5 @@
 import { useNavigate, NavigateFunction } from "react-router";
-import { Routes, detailedRoute } from "shared/routes";
+import { PossibleRoutes, detailedRoute } from "shared/routes";
 import { Tpg, UI } from "shared/ui";
 import { deleteWorkbench } from "../../model";
 import { Workbench } from "../../types";
@@ -7,7 +7,7 @@ import { Workbench } from "../../types";
 const menu = [{
     label: "common.edit",
     onClick: (workbench: Workbench, navigate: NavigateFunction) => navigate(
-        detailedRoute(Routes.WORKBENCH_DETAIL, workbench.id)
+        detailedRoute(PossibleRoutes.WORKBENCH_DETAIL, workbench.id)
     )
 }, {
     label: "common.delete",

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Routes } from "shared/routes";
+import { PossibleRoutes } from "shared/routes";
 import { Sidebar, UI, Icons, DividedLayout } from "shared/ui";
 import { WorkbenchesList } from "entities/workbenches";
 
@@ -11,7 +11,7 @@ function WorkbenchesBarWidget() {
                 <WorkbenchesList />
                 <UI.IconButton
                     component={Link}
-                    to={Routes.WORKBENCH_NEW}
+                    to={PossibleRoutes.WORKBENCH_NEW}
                 >
                     <Icons.Add />
                 </UI.IconButton>
