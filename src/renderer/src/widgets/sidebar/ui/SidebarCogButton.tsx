@@ -5,13 +5,13 @@ export function SidebarCogButton() {
     const handleMenuClick = toggleSidebar
 
     return (
-        <UI.IconButton
-            edge="end"
-            color="inherit"
+        <UI.Button
+            isIconOnly
             aria-label="menu"
+            variant="light"
             onClick={handleMenuClick}
         >
-            <Icons.Settings />
-        </UI.IconButton>
+            <Icons.SettingOutlined />
+        </UI.Button>
     );
 }

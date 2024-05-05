@@ -1,22 +1,22 @@
 import React from "react";
 import { TFunction, useTranslation } from "shared/i18n";
-import { UI } from "shared/ui";
 
-type TpgProps = UI.TypographyProps & {
+type TpgProps = {
     text?: string
     textProperties?: Record<string, string>
     children?: (t: TFunction) => React.ReactNode
 }
 
-export function Tpg({ text, textProperties, children, ...props }: TpgProps) {
+export function Tpg({ text, textProperties, children }: TpgProps) {
     const { t } = useTranslation();
 
-    return (
-        <UI.Typography
-            {...props}
-        >
-            {text && t(text, textProperties)}
-            {children && children(t)}
-        </UI.Typography>
-    )
+    if (children) {
+        return children(t)
+    }
+
+    if (text) {
+        return t(text, textProperties)
+    }
+
+    return null
 }

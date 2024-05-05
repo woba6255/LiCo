@@ -1,35 +1,34 @@
-import React from "react";
-import { PossibleRoutes } from "shared/routes";
-import { UI } from "shared/ui";
-import { NavigationTabs } from "./NavigationTabs";
+import React from 'react'
+import { PossibleRoutes } from 'shared/routes'
+import { UI } from 'shared/ui'
+import { NavigationTabs } from './NavigationTabs'
 
 type HeaderWidgetProps = {
-    children?: React.ReactNode;
+    tools: React.ReactNode;
 }
 
 const tabs = [{
     path: PossibleRoutes.HOME,
-    key: "navigation.home",
+    key: 'navigation.home',
 }, {
-    path: PossibleRoutes.WORKBENCH,
-    key: "navigation.workbench",
-}];
+    path: PossibleRoutes.OBJECTIVE,
+    key: 'navigation.workbench',
+}]
 
-function HeaderWidget({ children }: HeaderWidgetProps) {
+function HeaderWidget({ tools }: HeaderWidgetProps) {
     return (
-        <UI.AppBar
-            position="static"
-            color="primary"
-        >
-            <UI.Toolbar className="justify-between">
-                <UI.Typography variant="h6">
-                    LiCo
-                </UI.Typography>
-                <NavigationTabs tabs={tabs} />
-                {children}
-            </UI.Toolbar>
-        </UI.AppBar>
-    );
+        <UI.Navbar isBordered>
+            <UI.Navbar.Brand>
+                LiCo
+            </UI.Navbar.Brand>
+            <UI.Navbar.Content justify="center">
+                <NavigationTabs tabs={tabs}/>
+            </UI.Navbar.Content>
+            <UI.Navbar.Content justify="end">
+                {tools}
+            </UI.Navbar.Content>
+        </UI.Navbar>
+    )
 }
 
 const memo = React.memo(HeaderWidget)

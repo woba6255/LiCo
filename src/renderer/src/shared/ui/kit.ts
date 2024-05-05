@@ -1,3 +1,2 @@
-export * as Icons from '@mui/icons-material'
-export * as UIStyles from '@mui/material/styles'
-export * as UI from '@mui/material'
+export * as UI from './kits'
+export * as Icons from '@ant-design/icons'

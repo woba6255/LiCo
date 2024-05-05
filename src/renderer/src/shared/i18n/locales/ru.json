@@ -1,13 +1,16 @@
 {
-  "settings.pickLanguage": "Выберите язык",
+  "settings.appLanguage": "Язык приложения",
   "settings.autoStart": "Запускать при входе в систему",
+  "settings.header": "Настройки",
   "navigation.home": "Главная",
-  "navigation.workbench": "Управление задачами",
+  "navigation.workbench": "Цели и задачи",
   "common.save": "Сохранить",
   "common.delete": "Удалить",
   "common.edit": "Редактировать",
+  "common.close": "Закрыть",
   "common.saved": "Сохранено",
-  "workbench.field.name": "Название",
-  "workbench.form.create": "Создание задачи",
-  "workbench.form.edit": "Редактирование задачи"
+  "objective.field.name": "Название",
+  "objective.form.create": "Создание задачи",
+  "objective.form.edit": "Редактирование задачи",
+  "objective.list.empty": "Пустовато тут... \uD83E\uDD14"
 }

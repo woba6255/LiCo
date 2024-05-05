@@ -1,36 +1,34 @@
 import React from "react";
-import { useObservableEagerState } from "observable-hooks";
-import { Icons, Sidebar, UI } from "shared/ui";
+import { useObservableValue } from 'shared/react'
+import { UI } from 'shared/ui'
+import { useTranslation } from 'shared/i18n'
 import { isSidebarOpened$, toggleSidebar } from "../model";
+import { SettingsList } from './SettingsList.tsx'
 
-type SidebarWidgetProps = {
-    children?: React.ReactNode;
-}
-
-function SidebarWidget({ children }: SidebarWidgetProps) {
-    const isOpen = useObservableEagerState(isSidebarOpened$)
+function SidebarWidget() {
+    const { t } = useTranslation()
+    const isOpen = useObservableValue(isSidebarOpened$)
 
     const handleMenuClick = toggleSidebar
 
     return (
-        <Sidebar
-            open={isOpen}
-            width={300}
-            variant="drawer"
-        >
-            <UI.Toolbar>
-                <UI.IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="menu"
-                    onClick={handleMenuClick}
-                >
-                    <Icons.ChevronRight />
-                </UI.IconButton>
-            </UI.Toolbar>
-            <UI.Divider />
-            {children}
-        </Sidebar>
+
+        <UI.Modal isOpen={isOpen} onClose={handleMenuClick}>
+            <UI.Modal.Content>
+                <UI.Modal.Header className="px-3 py-2">
+                    {t("settings.header")}
+                </UI.Modal.Header>
+                <UI.Modal.Body className="px-3 py-1">
+                    <SettingsList />
+                </UI.Modal.Body>
+                <UI.Divider />
+                <UI.Modal.Footer className="px-3 py-2">
+                    <UI.Button variant="flat" onPress={toggleSidebar}>
+                        {t("common.close")}
+                    </UI.Button>
+                </UI.Modal.Footer>
+            </UI.Modal.Content>
+        </UI.Modal>
     )
 }
 

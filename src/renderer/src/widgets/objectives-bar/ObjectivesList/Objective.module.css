@@ -1,0 +1,8 @@
+.item:hover .moreButton {
+    opacity: 1;
+}
+
+.moreButton {
+    opacity: 0;
+    transition: opacity 0.13s ease-in;
+}
