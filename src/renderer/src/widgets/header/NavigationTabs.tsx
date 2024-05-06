@@ -1,8 +1,8 @@
-import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { PossibleRoutes } from 'shared/routes'
 import { UI } from 'shared/ui'
 import { useTranslation } from 'shared/i18n'
+import { useSelectedPath } from 'shared/react'
 
 type NavigationTabsProps = {
     tabs: {
@@ -11,31 +11,16 @@ type NavigationTabsProps = {
     }[];
 }
 
-const selectedPath = (pathname: string, paths: string[]) => {
-    return paths
-        .filter((route) => pathname.startsWith(route))
-        .sort((a, b) => {
-            const aSplit = a.split('/')
-            const bSplit = b.split('/')
-            if (aSplit.at(-1) === '') aSplit.pop()
-            if (bSplit.at(-1) === '') bSplit.pop()
-            return bSplit.length - aSplit.length
-        })
-        .at(0)
-}
-
 export function NavigationTabs({ tabs }: NavigationTabsProps) {
     const { t } = useTranslation()
-    const { pathname } = useLocation()
 
-    const selectedTab = selectedPath(
-        pathname,
+    const selectedPath = useSelectedPath(
         tabs.map((route) => route.path)
     )
 
     return (
         <UI.Tabs
-            selectedKey={selectedTab}
+            selectedKey={selectedPath}
             aria-label="Tabs"
         >
             {

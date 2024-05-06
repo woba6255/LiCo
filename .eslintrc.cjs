@@ -33,6 +33,7 @@ module.exports = {
             }]
         }],
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
     },
     overrides: [{
         files: ["*/**/shared/**/*", "*/**/app/**/*"],

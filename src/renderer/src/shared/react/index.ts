@@ -4,3 +4,4 @@ export * from './useEventHandler';
 export * from './ErrorBoundary';
 export * from './useObservableValue';
 export * from './useConstant';
+export * from './useSelectedPath';

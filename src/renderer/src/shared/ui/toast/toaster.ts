@@ -6,7 +6,6 @@ export const toaster = new Proxy(toast, {
         return (...args: unknown[]) => {
             const [message, options] = args
             const translatedMessage = typeof message === 'string' ? t(message) : message
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             return target[prop](translatedMessage, options)
         }

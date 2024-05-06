@@ -4,7 +4,7 @@ import { useEventHandler } from "shared/react";
 import { DividedLayout, Tpg, toaster } from "shared/ui";
 import { detailedRoute, PossibleRoutes } from "shared/routes";
 import { Objective, setObjective, useObjectiveById, LocalObjective } from 'entities/objective'
-import { ObjectiveForm, ObjectiveFormProvider, SaveObjectiveButton } from 'features/objective-form'
+import { ObjectiveForm, ObjectiveFormProvider, SaveObjectiveButton } from 'features/local-objective-form'
 
 type Props = {
     className?: string;

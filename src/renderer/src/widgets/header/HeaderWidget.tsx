@@ -12,7 +12,7 @@ const tabs = [{
     key: 'navigation.home',
 }, {
     path: PossibleRoutes.OBJECTIVE,
-    key: 'navigation.workbench',
+    key: 'navigation.objective',
 }]
 
 function HeaderWidget({ tools }: HeaderWidgetProps) {

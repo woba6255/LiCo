@@ -1,4 +1,4 @@
-import { UI } from 'shared/ui'
+import { Icons, UI } from 'shared/ui'
 import { localesOptions, changeLocale, useTranslation } from 'shared/i18n'
 
 
@@ -9,6 +9,7 @@ export function SelectLocale() {
         <UI.Select.Root
             label={t('settings.appLanguage')}
             selectedKeys={[i18n.language]}
+            startContent={<Icons.GlobalOutlined />}
         >
             {
                 localesOptions.map(({ value, label }) => (

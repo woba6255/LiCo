@@ -3,7 +3,7 @@
   "settings.autoStart": "Запускать при входе в систему",
   "settings.header": "Настройки",
   "navigation.home": "Главная",
-  "navigation.workbench": "Цели и задачи",
+  "navigation.objective": "Цели и задачи",
   "common.save": "Сохранить",
   "common.delete": "Удалить",
   "common.edit": "Редактировать",

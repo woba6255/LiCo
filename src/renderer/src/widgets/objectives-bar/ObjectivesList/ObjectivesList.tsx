@@ -1,43 +1,105 @@
+import React from 'react'
 import { useNavigate } from 'react-router'
-import { useObservableValue } from 'shared/react'
-import { allObjectives$ } from 'entities/objective'
-import { Tpg, UI } from 'shared/ui'
+import { motion } from 'framer-motion'
+import { useObservableValue, useSelectedPath } from 'shared/react'
+import { Tpg, UI, cn } from 'shared/ui'
 import { detailedRoute, PossibleRoutes } from 'shared/routes'
+import { allObjectives$ } from 'entities/objective'
 import { ObjectiveItemMenu } from './ObjectiveItemMenu.tsx'
 
 import styles from './Objective.module.css'
+
+const list = {
+    hidden: {},
+    show: {
+        transition: {
+            staggerChildren: 0.03,
+            delayChildren: 0,
+            duration: 0,
+        },
+    },
+}
+
+const item = {
+    hidden: {
+        opacity: 0,
+        y: 15,
+        x: 4,
+        rotate: -4,
+    },
+    show: {
+        rotate: 0,
+        opacity: 1,
+        y: 0,
+        x: 0,
+        transition: {
+            duration: 0.25,
+        },
+    },
+}
 
 export function ObjectivesList() {
     const objectives = useObservableValue(allObjectives$)
     const navigate = useNavigate()
 
+    const objectivesPrepared = React.useMemo(
+        () => objectives.map((objective) => {
+            return {
+                objective,
+                key: objective.id,
+                label: objective.name,
+                path: detailedRoute(PossibleRoutes.OBJECTIVE_DETAIL, objective.id),
+                onClick: () => {
+                    navigate(detailedRoute(PossibleRoutes.OBJECTIVE_NODE_EDITOR, objective.id))
+                },
+            }
+        }),
+        [navigate, objectives],
+    )
+
+    const selectedPath = useSelectedPath(
+        objectivesPrepared.map((prepared) => prepared.path),
+    )
+
     return (
-        <div className="flex flex-col w-full h-full">
+        <motion.div
+            variants={list}
+            initial="hidden"
+            animate="show"
+            className="flex flex-col w-full h-full"
+        >
             <UI.Listbox
                 label="Objectives"
                 variant="flat"
-                emptyContent={<Tpg text={'objective.list.empty'} />}
+                emptyContent={<Tpg text={'objective.list.empty'}/>}
+                classNames={{
+                    list: 'gap-0'
+                }}
             >
                 {
-                    objectives.map((objective) => (
+                    objectivesPrepared.map((prepared) => (
                         <UI.ListboxItem
-                            textValue={objective.name}
-                            key={objective.id}
-                            className={styles.item}
-                            onClick={() => {
-                                navigate(detailedRoute(PossibleRoutes.OBJECTIVE_NODE_EDITOR, objective.id))
-                            }}
+                            key={prepared.path}
+                            className={cn(
+                                styles.item,
+                                selectedPath === prepared.path && styles.selected,
+                            )}
+                            shouldHighlightOnFocus={false}
+                            onClick={prepared.onClick}
+                            as={motion.li}
+                            // @ts-ignore
+                            variants={item}
                             endContent={(
                                 <ObjectiveItemMenu
-                                    objective={objective}
+                                    objective={prepared.objective}
                                 />
                             )}
                         >
-                            {objective.name}
+                            {prepared.label}
                         </UI.ListboxItem>
                     ))
                 }
             </UI.Listbox>
-        </div>
+        </motion.div>
     )
 }
