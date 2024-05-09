@@ -8,6 +8,12 @@ export {
     Tab,
     Listbox,
     ListboxItem,
+    ListboxSection,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Tooltip,
+    Spinner,
 } from '@nextui-org/react'
 
 import {

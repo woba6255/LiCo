@@ -12,5 +12,12 @@
   "objective.field.name": "Название",
   "objective.form.create": "Создание задачи",
   "objective.form.edit": "Редактирование задачи",
-  "objective.list.empty": "Пустовато тут... \uD83E\uDD14"
+  "objective.list.empty": "Пустовато тут... \uD83E\uDD14",
+  "nodeEditor.status.hasChanges": "Сохранить",
+  "nodeEditor.status.saving": "Сохранение...",
+  "nodeEditor.status.saved": "Сохранено, ожидание изменений...",
+  "nodeEditor.status.error": "Что-то пошло не так, нажмите чтобы повторить",
+  "nodeEditor.selectNode.title": "Добавить узел:",
+  "nodeType.trigger.name": "Триггер",
+  "nodeType.notification.name": "Уведомление"
 }

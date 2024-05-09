@@ -24,14 +24,12 @@ const item = {
     hidden: {
         opacity: 0,
         y: 15,
-        x: 4,
         rotate: -4,
     },
     show: {
         rotate: 0,
         opacity: 1,
         y: 0,
-        x: 0,
         transition: {
             duration: 0.25,
         },

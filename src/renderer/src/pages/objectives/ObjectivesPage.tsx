@@ -7,7 +7,7 @@ type TasksPageProps = {
 
 function ObjectivesPage({ children }: TasksPageProps) {
     return (
-        <div className="flex flex-row h-full w-full">
+        <div className="grid grid-cols-[max-content,1fr] h-full w-full">
             <ObjectivesBar />
             {children}
         </div>

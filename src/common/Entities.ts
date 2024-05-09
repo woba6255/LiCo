@@ -19,10 +19,11 @@ export interface IEventNode<
 > {
     id: IS_CLIENT_VALUE extends true ? undefined : string;
     type: EventNodeType
-    name: string;
-    description: string;
-    releaseDate: string;
+    name?: string;
+    description?: string;
+    releaseDate?: string;
     position: string;
+    size: string | undefined;
     children: IS_NORMALIZED extends true ? string[] : IEventNode[];
     links: IS_NORMALIZED extends true ? string[] : ILinkableItem[];
 }

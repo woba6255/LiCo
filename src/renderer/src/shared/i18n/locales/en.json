@@ -2,5 +2,9 @@
     "settings.appLanguage": "App language",
     "settings.autoStart": "Start at login",
     "navigation.home": "Home",
-    "navigation.objective": "Tasks and objectives"
+    "navigation.objective": "Tasks and objectives",
+    "nodeEditor.status.hasChanges": "Save",
+    "nodeEditor.status.saving": "Saving...",
+    "nodeEditor.status.saved": "Saved, waiting for changes...",
+    "nodeEditor.status.error": "Something went wrong, click to retry"
 }

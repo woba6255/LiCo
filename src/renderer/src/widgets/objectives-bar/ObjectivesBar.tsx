@@ -6,7 +6,7 @@ import { ObjectivesList } from './ObjectivesList'
 
 function ObjectivesBar() {
     return (
-        <Sidebar isOpen>
+        <Sidebar>
             <DividedLayout>
                 <ObjectivesList />
                 <UI.Button

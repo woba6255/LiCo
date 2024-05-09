@@ -4,13 +4,17 @@ import { reactLazyImport } from 'shared/react'
 import { PossibleRoutes } from 'shared/routes'
 import { NotFound } from 'shared/ui'
 
-const TasksPageLazy = reactLazyImport(
+const ObjectivesPageLazy = reactLazyImport(
     () => import('./ObjectivesPage'),
     'ObjectivesPage',
 )
-const WorkbenchEditorWidgetLazy = reactLazyImport(
+const ObjectiveFormWidget = reactLazyImport(
     () => import('widgets/objective-form'),
     'ObjectiveFormWidget',
+)
+const ObjectiveNodeEditorWidget = reactLazyImport(
+    () => import('widgets/objective-node-editor'),
+    'ObjectiveNodeEditorWidget',
 )
 
 export function ObjectivesPageRouter() {
@@ -18,28 +22,28 @@ export function ObjectivesPageRouter() {
         <Routes>
             <Route
                 element={(
-                    <TasksPageLazy>
+                    <ObjectivesPageLazy>
                         <React.Suspense fallback={null}>
                             <Outlet/>
                         </React.Suspense>
-                    </TasksPageLazy>
+                    </ObjectivesPageLazy>
                 )}
             >
                 <Route
                     index
-                    element={404}
+                    element="Page concept: У вас N активаных задач, из них N регулярных и N одноразовых, хотите завести новую задачу?"
                 />
                 <Route
                     path={`${PossibleRoutes.DETAIL}/${PossibleRoutes.NODE_EDITOR}`}
-                    element="NODE_EDITOR"
+                    element={<ObjectiveNodeEditorWidget />}
                 />
                 <Route
                     path={PossibleRoutes.NEW}
-                    element={<WorkbenchEditorWidgetLazy className="grow"/>}
+                    element={<ObjectiveFormWidget />}
                 />
                 <Route
                     path={PossibleRoutes.DETAIL}
-                    element={<WorkbenchEditorWidgetLazy className="grow"/>}
+                    element={<ObjectiveFormWidget />}
                 />
             </Route>
             <Route path="*" element={<NotFound />}/>
