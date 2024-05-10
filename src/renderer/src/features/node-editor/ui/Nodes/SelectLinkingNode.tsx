@@ -21,11 +21,11 @@ export function SelectLinkingNode({
 
     return (
         <UI.Listbox
-            aria-label={t('nodeEditor.selectNode.title')}
+            aria-label={t('node_editor.selectNode.title')}
             onAction={onAction}
         >
             <UI.ListboxSection
-                title={t('nodeEditor.selectNode.title')}
+                title={t('node_editor.selectNode.title')}
                 classNames={{
                     group: 'flex flex-col gap-1',
                 }}

@@ -1,6 +1,6 @@
 {
-  "settings.appLanguage": "Язык приложения",
-  "settings.autoStart": "Запускать при входе в систему",
+  "settings.app_language": "Язык приложения",
+  "settings.auto-start": "Запускать при входе в систему",
   "settings.header": "Настройки",
   "navigation.home": "Главная",
   "navigation.objective": "Цели и задачи",
@@ -13,11 +13,12 @@
   "objective.form.create": "Создание задачи",
   "objective.form.edit": "Редактирование задачи",
   "objective.list.empty": "Пустовато тут... \uD83E\uDD14",
-  "nodeEditor.status.hasChanges": "Сохранить",
-  "nodeEditor.status.saving": "Сохранение...",
-  "nodeEditor.status.saved": "Сохранено, ожидание изменений...",
-  "nodeEditor.status.error": "Что-то пошло не так, нажмите чтобы повторить",
-  "nodeEditor.selectNode.title": "Добавить узел:",
-  "nodeType.trigger.name": "Триггер",
-  "nodeType.notification.name": "Уведомление"
+  "node_editor.status.hasChanges": "Сохранить",
+  "node_editor.status.saving": "Сохранение...",
+  "node_editor.status.saved": "Сохранено, ожидание изменений...",
+  "node_editor.status.error": "Что-то пошло не так, нажмите чтобы повторить",
+  "node_editor.selectNode.title": "Добавить узел:",
+  "node_type.trigger.name": "Триггер",
+  "node_type.notification.name": "Уведомление",
+  "common.leave_without_saving": "Вы уверены, что хотите покинуть страницу без сохранения?"
 }

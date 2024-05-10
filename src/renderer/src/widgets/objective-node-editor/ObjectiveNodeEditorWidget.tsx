@@ -3,8 +3,10 @@ import { useBlocker, useParams } from 'react-router'
 import { useEventHandler } from 'shared/react'
 import { useObjectiveById, setObjective } from 'entities/objective'
 import { NodeEditor, EventNode, EventLink, createNewNode, createNewLink } from 'features/node-editor'
+import { useTranslation } from 'shared/i18n'
 
 export function ObjectiveNodeEditorWidget() {
+    const { t } = useTranslation()
     const { id } = useParams<{ id: string }>()
     const [locked, setLocked] = React.useState(false)
 
@@ -12,7 +14,7 @@ export function ObjectiveNodeEditorWidget() {
 
     useBlocker(() => {
         if (locked) {
-            return !window.confirm('You have unsaved changes. Are you sure you want to leave from editor?')
+            return !window.confirm(t('common.leave_without_saving'))
         }
 
         return false
@@ -21,8 +23,6 @@ export function ObjectiveNodeEditorWidget() {
     if (!objective) throw new Error('Objective not found')
 
     const saveObjective = useEventHandler(async ({ links, nodes }: { links: EventLink[], nodes: EventNode[] }) => {
-        console.log('Saving objective')
-
         await setObjective({
             ...objective,
             nodes: nodes.map((n) => {

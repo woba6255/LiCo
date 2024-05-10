@@ -7,7 +7,7 @@ export function SelectLocale() {
 
     return (
         <UI.Select.Root
-            label={t('settings.appLanguage')}
+            label={t('settings.app_language')}
             selectedKeys={[i18n.language]}
             startContent={<Icons.GlobalOutlined />}
         >

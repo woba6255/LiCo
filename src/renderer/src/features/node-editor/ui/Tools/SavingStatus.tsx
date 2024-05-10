@@ -1,4 +1,5 @@
-import { Icons, Tpg, UI } from '../../../../shared/ui'
+import React from 'react'
+import { Icons, Tpg, UI } from 'shared/ui'
 import { EditorSavingStatus } from '../../types'
 
 type Props = {
@@ -20,28 +21,64 @@ export function SavingStatus({
     let icon = null
     let onCLick = undefined
 
-    switch (status) {
+    const onTimeoutRef = React.useRef<(() => void) | null>(null)
+    const timer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+    const [delayedStatus, setDelayed] = React.useState(status)
+
+    switch (delayedStatus) {
         case EditorSavingStatus.Waiting:
-            content = 'nodeEditor.status.hasChanges'
+            content = 'node_editor.status.hasChanges'
             icon = <Icons.SaveOutlined />
             onCLick = onSave
             break
         case EditorSavingStatus.Saving:
-            content = 'nodeEditor.status.saving'
+            content = 'node_editor.status.saving'
             icon = <UI.Spinner size="sm" />
             break
         case EditorSavingStatus.Saved:
-            content = 'nodeEditor.status.saved'
+            content = 'node_editor.status.saved'
             icon = <Icons.CheckOutlined />
             break
         case EditorSavingStatus.Error:
-            content = 'nodeEditor.status.error'
+            content = 'node_editor.status.error'
             icon = '❌'
             onCLick = onRetry
             break
         default:
-            neverReached(status)
+            neverReached(delayedStatus)
     }
+
+    React.useEffect(() => {
+        if (status !== EditorSavingStatus.Saved) {
+            if (timer.current) {
+                clearTimeout(timer.current)
+                timer.current = null
+            }
+
+            setDelayed(status)
+        }
+
+        onTimeoutRef.current = () => {
+            setDelayed(status)
+        }
+
+        if (!timer.current) {
+            timer.current = setTimeout(() => {
+                timer.current = null
+                if (onTimeoutRef.current) {
+                    onTimeoutRef.current()
+                }
+            }, 500)
+        }
+    }, [content, icon, onCLick, status])
+
+    React.useEffect(() => () => {
+        if (timer.current) {
+            clearTimeout(timer.current)
+            timer.current = null
+        }
+    }, [])
 
     return (
         <div className="absolute bottom-0 right-0 z-[5]">

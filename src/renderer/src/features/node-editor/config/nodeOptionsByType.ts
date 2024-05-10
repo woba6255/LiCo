@@ -14,12 +14,12 @@ export const nodeOptionsByType: Declaration = {
     [EventNodeType.DATE]: {
         type: EventNodeType.DATE,
         hasInnerSocket: false,
-        nameKey: 'nodeType.trigger.name',
+        nameKey: 'node_type.trigger.name',
     },
     [EventNodeType.NOTIFICATION]: {
         type: EventNodeType.NOTIFICATION,
         hasInnerSocket: true,
-        nameKey: 'nodeType.notification.name',
+        nameKey: 'node_type.notification.name',
     },
     [EventNodeType.RELATIVE]: {
         type: EventNodeType.RELATIVE,
