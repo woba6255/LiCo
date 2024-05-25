@@ -7,6 +7,10 @@ type Position = {
     y: number,
 }
 
+/**
+ * Hook to help with create confirmation (select, popover or other implementations) on specific position.
+ * And return some data from this confirmation to the caller
+ */
 export function useConfirmOverPosition<T>() {
     const [position, setPosition] = React.useState<Position | null>(null)
     const onConfirmRef = React.useRef<((nodeArgs: T) => void) | null>(null)

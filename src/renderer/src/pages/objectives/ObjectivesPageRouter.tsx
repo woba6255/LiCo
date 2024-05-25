@@ -21,6 +21,11 @@ export function ObjectivesPageRouter() {
     return (
         <Routes>
             <Route
+                /**
+                * Used suspense to lazy load the page.
+                * Fallback is null because in electron page will be loaded instantly.
+                * Still need testing post-build behavior.
+                */
                 element={(
                     <ObjectivesPageLazy>
                         <React.Suspense fallback={null}>

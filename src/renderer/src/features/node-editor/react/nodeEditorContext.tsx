@@ -7,6 +7,9 @@ const context = React.createContext<NodeEditorStoreApi | null>(null)
 
 type Props = {
     children: React.ReactNode
+    /**
+     * Initial data to populate the store.
+     */
     initialData: NodeEditorData
 }
 

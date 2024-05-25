@@ -16,6 +16,11 @@ const nodeOrigin: Flow.NodeOrigin = [0, 0.5]
 
 type Props = {
     onSave: (data: NodeEditorData) => Promise<void>
+    /**
+     * Needs to prevent data loss.
+     * Because calling save is not immediately.
+     * TODO: move save status controlling to the parent component
+     */
     onHasChangesChange: (hasChanges: boolean) => void
 }
 
@@ -46,11 +51,17 @@ function NodeEditorSimple(props: Props) {
 
     const { screenToFlowPosition } = Flow.useReactFlow()
 
+    /**
+     * start dragging
+     */
     const onConnectStart: Flow.OnConnectStart = useEventHandler((_, params) => {
         connectionNodeIdRef.current = params.nodeId
         connectionNodeIdHandler.current = params.handleId
     })
 
+    /**
+     * connect edge with link
+     */
     const onConnect: Flow.OnConnect = useEventHandler((params) => {
         connectionNodeIdRef.current = null
         connectionNodeIdHandler.current = null
@@ -60,6 +71,9 @@ function NodeEditorSimple(props: Props) {
         store.setLinks(Flow.addEdge(params, links) as EventLink[])
     })
 
+    /**
+     * stop dragging
+     */
     const onConnectEnd = useEventHandler((event: React.MouseEvent) => {
         if (!connectionNodeIdRef.current) return
         const sourceId = connectionNodeIdRef.current
@@ -71,6 +85,9 @@ function NodeEditorSimple(props: Props) {
             y: event.clientY,
         })
 
+        /**
+         * Show popover
+         */
         onConfirm((type) => {
             const newNode = createNewNode({
                 type,
@@ -96,6 +113,9 @@ function NodeEditorSimple(props: Props) {
             y: event.clientY,
         })
 
+        /**
+         * Show popover
+         */
         onConfirm((type) => {
             const newNode = createNewNode({
                 type,
@@ -149,6 +169,7 @@ function NodeEditorSimple(props: Props) {
             >
                 <SelectLinkingNode
                     hasInnerSocket={confirmOver.position?.type === 'link'}
+                    // send selected node type to the caller
                     onSelect={confirmOver.confirm}
                 />
             </EditorPopup>

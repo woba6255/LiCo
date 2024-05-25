@@ -1,20 +1,25 @@
 import React from 'react'
-import { Navigate, useBlocker, useParams } from 'react-router'
+import { useBlocker, useParams } from 'react-router'
 import { useEventHandler } from 'shared/react'
 import { useObjectiveById, setObjective } from 'entities/objective'
 import { NodeEditor, NodeEditorContextProvider, NodeEditorData } from 'features/node-editor'
-import { PossibleRoutes } from 'shared/routes'
 import { convertFromNodeEditorData, convertToNodeEditorData } from './convertData'
 
 export function ObjectiveNodeEditorWidget() {
     const { id: objectiveId } = useParams<{ id: string }>()
+
+    // Block navigation while saving
+    // TODO: extract to a hook
     const [locked, setLocked] = React.useState(false)
+    const blocker = useBlocker(locked);
+    React.useEffect(() => {
+        if (!locked && blocker?.proceed) {
+            blocker.proceed()
+        }
+    }, [locked, blocker])
 
     const objective = useObjectiveById(objectiveId)
-
     if (!objective) throw new Error('Objective not found')
-
-    const blocker = useBlocker(locked);
 
     const saveObjective = useEventHandler(async (d: NodeEditorData) => {
         setLocked(true)
@@ -24,21 +29,10 @@ export function ObjectiveNodeEditorWidget() {
         setLocked(false)
     })
 
-    React.useEffect(() => {
-        if (!locked && blocker?.proceed) {
-            blocker.proceed()
-        }
-    }, [locked, blocker])
-
-
     const data = React.useMemo(
         () => convertToNodeEditorData(objective),
         [objective],
     )
-
-    if (!objective && objectiveId) {
-        return <Navigate to={PossibleRoutes.OBJECTIVE} replace />
-    }
 
     return (
         <NodeEditorContextProvider initialData={data}>
