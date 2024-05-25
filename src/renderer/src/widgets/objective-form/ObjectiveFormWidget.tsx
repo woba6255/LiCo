@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useEventHandler } from "shared/react";
 import { DividedLayout, Tpg, toaster } from "shared/ui";
 import { detailedRoute, PossibleRoutes } from "shared/routes";
@@ -16,6 +16,8 @@ function ObjectiveFormWidget({ className }: Props) {
 
     const objective = useObjectiveById(objectiveId);
 
+    if (!objective && objectiveId) throw new Error('Objective not found')
+
     const onSave = useEventHandler(async (objectiveToSave: Objective | LocalObjective) => {
         try {
             const { id } = await setObjective(objectiveToSave)
@@ -29,10 +31,6 @@ function ObjectiveFormWidget({ className }: Props) {
             }
         }
     })
-
-    if (!objective && objectiveId) {
-        return <Navigate to={PossibleRoutes.OBJECTIVE} replace />
-    }
 
     return (
         <ObjectiveFormProvider

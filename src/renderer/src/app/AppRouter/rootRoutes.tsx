@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, Route } from 'react-router-dom'
-import { pagesRoutes } from 'pages/pagesRoutes.tsx'
-import { AppLayout } from '../AppLayout.tsx'
+import { pagesRoutes } from 'pages/pagesRoutes'
+import { AppLayout } from '../AppLayout'
 
 export const rootRoutes = (
     <Route

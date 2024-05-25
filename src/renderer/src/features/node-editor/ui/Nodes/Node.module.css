@@ -1,15 +1,15 @@
 .socket {
-    @apply !bg-transparent !rounded-none !border-t-3 !border-b-3 !border-transparent;
+    @apply !bg-transparent !rounded-none !border-t-5 !border-b-5 !border-transparent;
 }
 
 .source {
-    @apply !right-0 !box-border !border-l-[.4rem] !border-r-0 !border-l-primary;
+    @apply !right-0 !box-border !border-l-[.5rem] !border-r-0 !border-l-primary;
 }
 
 .target {
-    @apply !left-0 !box-border !border-l-[.4rem] !border-r-0 !border-l-primary;
+    @apply !left-0 !box-border !border-l-[.5rem] !border-r-0 !border-l-primary;
 }
 
 .nodeCard {
-    @apply flex flex-row bg-white p-2 border border-gray-200 rounded;
+    @apply flex flex-col gap-1 bg-white p-2 border border-gray-200 rounded;
 }

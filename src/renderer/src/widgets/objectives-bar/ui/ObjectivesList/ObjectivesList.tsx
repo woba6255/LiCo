@@ -5,7 +5,7 @@ import { useObservableValue, useSelectedPath } from 'shared/react'
 import { Tpg, UI, cn } from 'shared/ui'
 import { detailedRoute, PossibleRoutes } from 'shared/routes'
 import { allObjectives$ } from 'entities/objective'
-import { ObjectiveItemMenu } from './ObjectiveItemMenu.tsx'
+import { ObjectiveItemMenu } from './ObjectiveItemMenu'
 
 import styles from './Objective.module.css'
 
@@ -23,12 +23,16 @@ const list = {
 const item = {
     hidden: {
         opacity: 0,
+        rotate: -6,
+        width: '90%',
+        x: 3,
         y: 15,
-        rotate: -4,
     },
     show: {
-        rotate: 0,
         opacity: 1,
+        rotate: 0,
+        width: 'auto',
+        x: 0,
         y: 0,
         transition: {
             duration: 0.25,

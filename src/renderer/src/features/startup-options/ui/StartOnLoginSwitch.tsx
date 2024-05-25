@@ -8,7 +8,7 @@ export function StartOnLoginSwitch() {
 
     return (
         <UI.Switch
-            checked={checked}
+            isSelected={checked}
             onClick={handleSwitchClick}
         >
             <Tpg text="settings.auto-start"/>

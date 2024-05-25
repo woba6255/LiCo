@@ -3,7 +3,7 @@ import { useObservableValue } from 'shared/react'
 import { UI } from 'shared/ui'
 import { useTranslation } from 'shared/i18n'
 import { isSidebarOpened$, toggleSidebar } from "../model";
-import { SettingsList } from './SettingsList.tsx'
+import { SettingsList } from './SettingsList'
 
 function SidebarWidget() {
     const { t } = useTranslation()

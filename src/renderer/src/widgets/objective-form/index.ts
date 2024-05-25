@@ -1,1 +1,1 @@
-export * from './ObjectiveFormWidget.tsx'
+export * from './ObjectiveFormWidget'

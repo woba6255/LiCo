@@ -1,26 +1,24 @@
 import React from 'react'
 import { useEventHandler } from 'shared/react'
-import { EditorSavingStatus, EventLink, EventNode } from '../types'
+import { EditorSavingStatus } from '../types'
 
-
-export function useSaveController(
-    onSave: (data: { nodes: EventNode[], links: EventLink[] }) => Promise<void>,
-    nodes: EventNode[],
-    links: EventLink[],
+export function useSaveController<DATA>(
+    data: DATA,
+    onSave: (data: DATA) => Promise<void>,
     haveChanges: boolean,
 ) {
     const [status, setStatus] = React.useState(EditorSavingStatus.Saved)
 
-    const save = useEventHandler((ns: EventNode[], ls: EventLink[]) => {
+    const save = useEventHandler((data: DATA) => {
         setStatus(EditorSavingStatus.Saving)
 
-        onSave({ nodes: ns, links: ls })
+        onSave(data)
             .then(() => setStatus(EditorSavingStatus.Saved))
             .catch(() => setStatus(EditorSavingStatus.Error))
     })
 
     const forceSave = useEventHandler(() => {
-        save(nodes, links)
+        save(data)
     })
 
     React.useEffect(() => {
@@ -28,7 +26,7 @@ export function useSaveController(
 
         if (haveChanges) {
             setStatus(EditorSavingStatus.Waiting)
-            timer = setTimeout(() => save(nodes, links), 5000)
+            timer = setTimeout(() => save(data), 1500)
         } else {
             setStatus(EditorSavingStatus.Saved)
         }
@@ -36,7 +34,7 @@ export function useSaveController(
         return () => {
             if (timer) clearTimeout(timer)
         }
-    }, [haveChanges, links, nodes, save])
+    }, [data, haveChanges, save])
 
     return { status, forceSave }
 }

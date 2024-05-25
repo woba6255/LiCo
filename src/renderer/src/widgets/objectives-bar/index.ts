@@ -1,1 +1,1 @@
-export * from './ObjectivesBar.tsx';
+export * from './ui/ObjectivesBar';

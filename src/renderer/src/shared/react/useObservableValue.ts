@@ -23,11 +23,14 @@ export function useObservableValue<T>(
     const subject$ = useConstant(() => {
         const subject = new BehaviorSubject<T | typeof NONE>(NONE)
 
-        const s = input$.subscribe((v) => {
-            subject.next(v)
-        })
 
-        s.unsubscribe()
+        /**
+         * Check if the Observable synchronously returns a value,
+         *  like BehaviorSubject or etc.
+         */
+        input$
+          .subscribe(subject.next.bind(subject))
+          .unsubscribe()
 
         return subject
     }, [input$])

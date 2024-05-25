@@ -1,31 +1,16 @@
-export interface ILinkableItem<IS_CLIENT_VALUE extends boolean = false> {
-    id: IS_CLIENT_VALUE extends true ? undefined : string;
-    type: LinkableItemType;
-}
-
-export interface INotificationConfirm<
-    IS_CLIENT_VALUE extends boolean = false,
-    IS_NORMALIZED extends boolean = true
-> extends ILinkableItem<IS_CLIENT_VALUE> {
-    label: string;
-    isDefault: boolean;
-    type: LinkableItemType.CONFIRM;
-    childrens: IS_NORMALIZED extends true ? string[] : IEventNode[];
-}
-
 export interface IEventNode<
     IS_CLIENT_VALUE extends boolean = false,
-    IS_NORMALIZED extends boolean = true
+    T extends EventNodeType = EventNodeType
 > {
     id: IS_CLIENT_VALUE extends true ? undefined : string;
-    type: EventNodeType
+    type: T
+    data: EventNodeDataByType[T];
     name?: string;
     description?: string;
     releaseDate?: string;
     position: string;
     size: string | undefined;
-    children: IS_NORMALIZED extends true ? string[] : IEventNode[];
-    links: IS_NORMALIZED extends true ? string[] : ILinkableItem[];
+    children: string[];
 }
 
 export enum EventNodeType {
@@ -34,53 +19,45 @@ export enum EventNodeType {
     NOTIFICATION = 'notification'
 }
 
-export enum LinkableItemType {
-    CONFIRM = 'confirm',
+export type EventNodeDataByType = {
+    [EventNodeType.DATE]: Partial<IDateEventNodeData>;
+    [EventNodeType.RELATIVE]: Partial<IRelativeEventNodeData>;
+    [EventNodeType.NOTIFICATION]: Partial<INotificationEventNodeData>;
 }
 
-export interface IDateEventNode extends IEventNode {
-    type: EventNodeType.DATE;
+export interface IDateEventNodeData {
     dateFormula: string
     repeat: boolean;
 }
 
-export interface IRelativeEventNode extends IEventNode {
-    type: EventNodeType.RELATIVE;
+export interface IRelativeEventNodeData {
     relativeFormula: string;
 }
 
-export interface INotificationEventNode<
-    IS_CLIENT_VALUE extends boolean = false,
-    IS_NORMALIZED extends boolean = true
-> extends IEventNode<IS_CLIENT_VALUE, IS_NORMALIZED> {
-    type: EventNodeType.NOTIFICATION;
+export interface INotificationEventNodeData {
     header: string;
     message: string;
     makeSound: boolean;
     showInFeed: boolean;
     predictInFeed: boolean;
     repeatBeforeConfirm: boolean;
-    confirms: IS_NORMALIZED extends true ? string[] : INotificationConfirm[];
+    confirms: string[];
 }
 
 
 export interface IWorkbench<
     IS_CLIENT_VALUE extends boolean = false,
-    IS_NORMALIZED extends boolean = true
 > {
     id: IS_CLIENT_VALUE extends true ? undefined : string;
     name: string;
     description: string;
     status: 'active' | 'complete' | 'failed' | 'canceled' | 'idle'
-    nodes: IEventNode<boolean, IS_NORMALIZED>[];
-    linkableItems: ILinkableItem[];
-    entryPoints: IS_NORMALIZED extends true ? string[] : IEventNode[];
+    nodes: IEventNode[]
 }
 
 export interface ITask {
     id: string
     workbenchId: string;
     nodeId: string;
-    releaseDate: string;
-    repeatTimes: number;
+    releaseTime: number;
 }

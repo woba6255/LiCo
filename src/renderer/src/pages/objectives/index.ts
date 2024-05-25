@@ -1,1 +1,1 @@
-export * from './ObjectivesPageRouter.tsx';
+export * from './ObjectivesPageRouter';

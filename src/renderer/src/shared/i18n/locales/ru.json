@@ -18,7 +18,9 @@
   "node_editor.status.saved": "Сохранено, ожидание изменений...",
   "node_editor.status.error": "Что-то пошло не так, нажмите чтобы повторить",
   "node_editor.selectNode.title": "Добавить узел:",
-  "node_type.trigger.name": "Триггер",
+  "node_type.trigger.name": "Событие",
+  "node_type.trigger.text_expression": "Текстовое выражение",
   "node_type.notification.name": "Уведомление",
+  "node_type.relative.name": "Относительное событие",
   "common.leave_without_saving": "Вы уверены, что хотите покинуть страницу без сохранения?"
 }

@@ -2,11 +2,18 @@ import React from "react";
 import { Link } from 'react-router-dom'
 import { PossibleRoutes } from "shared/routes";
 import { Sidebar, UI, Icons, DividedLayout } from "shared/ui";
+import { useObservableValue } from 'shared/react'
+import { isObjectiveBarOpen$, toggleObjectiveBar } from '../model'
 import { ObjectivesList } from './ObjectivesList'
 
 function ObjectivesBar() {
+    const isOpen = useObservableValue(isObjectiveBarOpen$)
+
     return (
-        <Sidebar>
+        <Sidebar
+            isOpen={isOpen}
+            onToggle={toggleObjectiveBar}
+        >
             <DividedLayout>
                 <ObjectivesList />
                 <UI.Button

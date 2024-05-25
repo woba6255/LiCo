@@ -38,8 +38,10 @@ export const deleteObjective = async (id: string) => {
 
     await backendApi.deleteWorkbench(id);
 
-    objectiveStore$.next({
-        ...currentState,
-        allObjectivesMap,
-    });
+    setTimeout(() => {
+        objectiveStore$.next({
+            ...currentState,
+            allObjectivesMap,
+        });
+    }, 10)
 }

@@ -1,1 +1,1 @@
-export * from './ObjectiveForm.tsx'
+export * from './ObjectiveForm'

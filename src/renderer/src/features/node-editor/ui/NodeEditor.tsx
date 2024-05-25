@@ -1,8 +1,9 @@
 import React from 'react'
 import * as Flow from 'reactflow'
-import { useConstant, useEventHandler, useObservableValue } from 'shared/react'
-import { createNewLink, createNewNode, createNodeEditorStore } from '../model'
-import { EventLink, EventNode, EventNodeType } from '../types'
+import { useEventHandler, useObservableValue } from 'shared/react'
+import { createNewLink, createNewNode } from '../model'
+import { useNodeEditorStore } from '../react'
+import { EventLink, EventNode, EventNodeType, NodeEditorData } from '../types'
 import { useConfirmOverPosition, useSaveController } from '../utils'
 import { SelectLinkingNode, nodeTypes } from './Nodes'
 import { EditorPopup, SavingStatus } from './Tools'
@@ -12,10 +13,9 @@ import styles from './NodeEditor.module.css'
 
 const nodeOrigin: Flow.NodeOrigin = [0, 0.5]
 
+
 type Props = {
-    nodes: EventNode[]
-    links: EventLink[]
-    onSave: (data: { nodes: EventNode[], links: EventLink[] }) => Promise<void>
+    onSave: (data: NodeEditorData) => Promise<void>
     onHasChangesChange: (hasChanges: boolean) => void
 }
 
@@ -23,23 +23,16 @@ function NodeEditorSimple(props: Props) {
     const {
         onHasChangesChange,
     } = props
-
-    const store = useConstant(
-        () => createNodeEditorStore({
-            initialNodes: props.nodes,
-            initialLinks: props.links,
-        }),
-        [props.nodes, props.links],
-    )
+    const store = useNodeEditorStore()
 
     const nodes = useObservableValue(store.nodes$)
     const links = useObservableValue(store.links$)
+    const data = useObservableValue(store.data$)
     const hasChanges = useObservableValue(store.hasChanges$)
 
-    const { status, forceSave } = useSaveController(
+    const { status, forceSave } = useSaveController<NodeEditorData>(
+        data,
         props.onSave,
-        nodes,
-        links,
         hasChanges,
     )
 
@@ -133,7 +126,6 @@ function NodeEditorSimple(props: Props) {
             attributionPosition="bottom-left"
             className={styles.nodeEditor}
             fitView
-            fitViewOptions={{ padding: 5 }}
             nodeOrigin={nodeOrigin}
             nodeTypes={nodeTypes}
             proOptions={{ hideAttribution: true }}

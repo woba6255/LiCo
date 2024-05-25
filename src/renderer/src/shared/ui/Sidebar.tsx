@@ -1,4 +1,5 @@
 import React from "react";
+import { useEventHandler } from '../react'
 import { Icons, UI } from "./kit";
 
 type SidebarProps = {
@@ -12,6 +13,8 @@ type SidebarProps = {
     variant?: 'resize' | 'translate'
     hideDirection?: 'left' | 'right';
     transitionClasses?: string;
+    isOpen?: boolean;
+    onToggle?: (isOpen: boolean) => void;
 }
 
 export function Sidebar({
@@ -21,12 +24,12 @@ export function Sidebar({
     hideDirection = 'left',
     variant = 'resize',
     transitionClasses: innerTransitionClasses,
+    isOpen = true,
+    onToggle,
 }: SidebarProps) {
-    const [isOpen, setIsShown] = React.useState(true);
-
-    const handleToggle = React.useCallback(() => {
-        setIsShown((prev) => !prev);
-    }, []);
+    const handleToggle = useEventHandler(() => {
+        onToggle?.(!isOpen);
+    })
 
     const duration = variant === 'resize'
         ? 'duration-200'

@@ -24,7 +24,7 @@ export const nodeOptionsByType: Declaration = {
     [EventNodeType.RELATIVE]: {
         type: EventNodeType.RELATIVE,
         hasInnerSocket: true,
-        nameKey: 'nodeType.relative.name',
+        nameKey: 'node_type.relative.name',
     },
 }
 

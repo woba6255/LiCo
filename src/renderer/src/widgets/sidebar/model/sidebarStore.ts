@@ -1,4 +1,4 @@
-import { BehaviorSubject, map } from "rxjs";
+import { BehaviorSubject, map } from 'rxjs'
 
 type SidebarState = {
     isOpen: boolean;
@@ -12,7 +12,7 @@ const sidebarStore$ = new BehaviorSubject(initialState);
 
 export const isSidebarOpened$ = sidebarStore$.pipe(
     map(state => state.isOpen),
-);
+)
 
 export const toggleSidebar = () => {
     const currentState = sidebarStore$.getValue();

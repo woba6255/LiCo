@@ -14,7 +14,10 @@ const menu = [{
 }, {
     key: 'common.delete',
     danger: true,
-    onClick: (objective: Objective) => deleteObjective(objective.id),
+    onClick: async (objective: Objective, navigate: NavigateFunction) => {
+        await deleteObjective(objective.id)
+        navigate(PossibleRoutes.OBJECTIVE)
+    },
 }]
 
 type ObjectiveItemMenu = {
