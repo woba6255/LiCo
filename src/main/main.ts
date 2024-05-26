@@ -5,9 +5,8 @@ import { mainWindow } from "./App/MainWindow";
 import { startAppOnLogin } from "./App/StartAppOnLogin";
 import { appStore } from "./App/store";
 
-import "common/temporal"
-
 await appStore.onAppInit()
+await entitiesManager.onAppInit()
 
 app.whenReady().then(async () => {
     const isHidden = process.argv.includes("--hidden")

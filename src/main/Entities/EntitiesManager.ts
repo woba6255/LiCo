@@ -1,8 +1,13 @@
+import { Temporal } from '@js-temporal/polyfill'
 import { CHANNELS } from 'common/Channels'
 import { EventNodeDataByType, EventNodeType, IEventNode, ITask, IWorkbench } from 'common/Entities'
-import { ipcMain } from 'electron'
+import { ipcMain, Notification } from 'electron'
 import { InterfaceToType, store } from '../App/store'
+import { calculateDateFormulaRelease } from './calculateDateFormulaRelease.ts'
 
+/**
+ * Temporary solution.
+ */
 class EntitiesManager {
     public onAppReady() {
         ipcMain.handle(CHANNELS.GET_WORKBENCHES, () => {
@@ -20,7 +25,78 @@ class EntitiesManager {
 
     public async onAppInit() {
         const state = await this.getWorkbenches()
-        const objectives = Objective.fromObject(state)
+        this.updateObjectives(Objective.fromObject(state))
+    }
+
+    private objectives: Objective[] = []
+    private nextReleaseTime = -1
+    private nextReleaseTasksIds: string[] = []
+    private timer: NodeJS.Timeout | null = null
+
+    private updateObjectives(objectives: Objective[]) {
+        this.objectives = objectives
+        this.setupTasks()
+    }
+
+    private setupTasks() {
+        const tasks = this.objectives.flatMap((objective) => objective.tasks)
+
+        const nextReleaseTasks = tasks
+            .filter((task) => task.releaseTime !== -1)
+            .sort((a, b) => a.releaseTime - b.releaseTime)
+            .filter((task, index, array) => task.releaseTime === array[0].releaseTime)
+
+        const nextReleaseTime = nextReleaseTasks[0]?.releaseTime ?? -1
+        this.nextReleaseTasksIds = nextReleaseTasks.map((task) => task.id)
+
+        if (nextReleaseTime !== this.nextReleaseTime) {
+            this.nextReleaseTime = nextReleaseTime
+            this.updateTimer()
+        }
+    }
+
+    private onTimerEnd() {
+        const tasks = this.objectives.flatMap((objective) => objective.tasks)
+        const releasedTasks = tasks.filter((task) => this.nextReleaseTasksIds.includes(task.id))
+
+        releasedTasks.forEach((task) => {
+          const objective = this.objectives.find((objective) => objective.id === task.workbenchId)!
+          const node = objective.getNodeById(task.nodeId)!
+
+          node.children.forEach((id) => {
+            const childNode = objective.getNodeById(id)!
+
+            if (childNode.type === EventNodeType.NOTIFICATION) {
+                const data = childNode.data as EventNodeDataByType[EventNodeType.NOTIFICATION]
+
+                const notification = new Notification({
+                    title: data.header,
+                    body: data.message,
+                })
+
+                notification.show()
+            }
+          })
+        })
+
+        this.setupTasks()
+    }
+
+    private updateTimer() {
+        if (this.timer) {
+            clearTimeout(this.timer)
+        }
+
+        if (this.nextReleaseTime === -1) {
+            return
+        }
+
+        const timeout = this.nextReleaseTime - Temporal.Now.zonedDateTimeISO().epochMilliseconds
+
+        const nextStr = Temporal.Now.zonedDateTimeISO().add({ milliseconds: timeout }).toLocaleString()
+        console.log(`Timer updated. Next release time: ${nextStr}`)
+
+        this.timer = setTimeout(this.onTimerEnd.bind(this), timeout)
     }
 
     private getWorkbenches() {
@@ -28,10 +104,16 @@ class EntitiesManager {
     }
 
     private setWorkbench(workbench: IWorkbench) {
+        const objective = Objective.fromObject({ [workbench.id]: workbench })
+
+        const objectives = this.objectives.filter((objective) => objective.id !== workbench.id)
+        this.updateObjectives([...objectives, ...objective])
         return store.workbenches[workbench.id].set(workbench as InterfaceToType<IWorkbench>)
     }
 
     private deleteWorkbench(id: string) {
+        const objectives = this.objectives.filter((objective) => objective.id !== id)
+        this.updateObjectives(objectives)
         return store.workbenches[id].delete()
     }
 }
@@ -61,7 +143,7 @@ class Objective implements IWorkbench {
     get tasks() {
         const entryPoints = this.entryPoints
         const taskPoints = entryPoints.flatMap(this.getTaskPoints.bind(this))
-        return [...entryPoints, ...taskPoints].map(this.createTask.bind(this))
+        return [...entryPoints, ...taskPoints].map((node) => this.createTask(node))
     }
 
     static fromObject(object: Record<string, IWorkbench>): Objective[] {
@@ -81,16 +163,24 @@ class Objective implements IWorkbench {
     }
 
     createTask(node: EventNode): ITask {
+        let releaseTime = -1
+        if (node.type === EventNodeType.DATE) {
+            const trueNode = node as EventNode<EventNodeType.DATE>
+            if (trueNode.data.dateFormula) {
+                releaseTime = calculateDateFormulaRelease(trueNode.data.dateFormula)
+            }
+        }
+
         return {
             id: `${this.id}-${node.id}`,
             workbenchId: this.id,
             nodeId: node.id,
-            releaseTime: -1,
+            releaseTime,
         }
     }
 }
 
-class EventNode<T extends EventNodeType = EventNodeType> implements IEventNode {
+class EventNode<T extends EventNodeType = EventNodeType> implements IEventNode<false, T> {
     id: string
     type: T
     name?: string
@@ -120,221 +210,5 @@ class EventNode<T extends EventNodeType = EventNodeType> implements IEventNode {
     get isTaskPoint() {
         return this.type === EventNodeType.RELATIVE
             || this.type === EventNodeType.DATE
-    }
-}
-
-type PeriodExpression = {
-    isPeriod: boolean,
-    periodic?: number,
-    startOffset: number,
-    endOffset: number,
-    key: string,
-}
-
-function formulaToTime(formula: string) {
-    const periods: PeriodExpression[] = formula
-    .split(' ')
-    .map((expression) => {
-        const [symbolValue, symbol] = parseExpression(expression)
-        const symbolInfo = getSymbolInfo(symbol)
-        const periodOffset = getPeriodOffset(symbolValue, symbolInfo.isPeriod)
-
-        return {
-            ...symbolInfo,
-            ...periodOffset,
-        }
-    })
-
-    const timeZone = Temporal.Now.timeZoneId()
-    const combinedPeriods = combinePeriods(periods)
-    const currentPeriod = getCurrentPeriod(combinedPeriods, timeZone)
-}
-
-function getCurrentPeriod(periods: PeriodExpression[], timeZone: string) {
-    const now = Temporal.Now.zonedDateTimeISO(timeZone)
-    const currentStart = Temporal.ZonedDateTime.from({
-        year: now.year,
-        month: 1,
-        day: 1,
-        timeZone: timeZone,
-    })
-
-    const currentEnd = Temporal.ZonedDateTime.from({
-        year: now.year + 1,
-        month: 1,
-        day: 1,
-        timeZone: timeZone,
-    }).add({ nanoseconds: -1 })
-
-    const nextStart = Temporal.ZonedDateTime.from({
-        year: now.year + 1,
-        month: 1,
-        day: 1,
-        timeZone: timeZone,
-    })
-
-    const nextEnd = Temporal.ZonedDateTime.from({
-        year: now.year + 2,
-        month: 1,
-        day: 1,
-        timeZone: timeZone,
-    }).add({ nanoseconds: -1 })
-
-    const periodBoundaries = {
-        current: { start: currentStart, end: currentEnd },
-        next: { start: nextStart, end: nextEnd },
-    }
-
-    function addTo(
-        period: 'current' | 'next',
-        start: 'start' | 'end',
-        key: string,
-        value: number
-    ) {
-        if (value === 0) return
-        const doCopy = (start === 'end' && value > 0) || (start === 'start' && value < 0)
-        const operation = value > 0 ? 'add' : 'subtract'
-        const offset = value > 0 ? value : value * -1
-        const periodBoundary = periodBoundaries[period]
-
-        if (doCopy) {
-            const copy = Temporal.ZonedDateTime.from(periodBoundary[start])
-            copy[operation]({ [key]: offset })
-            periodBoundary[start] = copy
-            return
-        }
-
-        periodBoundary[start][operation]({ [key]: offset })
-    }
-
-    periods.forEach((period) => {
-        // simple way
-        if (!period.isPeriod) {
-            addTo('current', 'start', period.key, period.startOffset)
-            addTo('current', 'end', period.key, period.endOffset)
-            addTo('next', 'start', period.key, period.startOffset)
-            addTo('next', 'end', period.key, period.endOffset)
-            return
-        }
-
-
-    })
-}
-
-
-function combinePeriods(periods: PeriodExpression[]) {
-    if (periods.length <= 1) {
-        return periods
-    }
-
-    const acc: PeriodExpression[] = []
-
-    periods.forEach((nextPeriod) => {
-        const period = acc.at(-1)
-
-        if (!period) {
-            acc.push(nextPeriod)
-            return
-        }
-
-        if (canCombine(period, nextPeriod)) {
-            const combinedPeriod: PeriodExpression = {
-                ...period,
-                startOffset: Math.min(period.startOffset, nextPeriod.startOffset),
-                endOffset: Math.max(period.endOffset, nextPeriod.endOffset),
-            }
-
-            acc.pop()
-            acc.push(combinedPeriod)
-        } else {
-            acc.push(nextPeriod)
-        }
-
-    })
-
-    return acc
-}
-
-function canCombine(period: PeriodExpression, nextPeriod: PeriodExpression) {
-    if (period.key !== nextPeriod.key) {
-        return false
-    }
-
-    const hasPeriod = period.isPeriod || nextPeriod.isPeriod
-    const hasFalsyPeriod = !period.isPeriod || !nextPeriod.isPeriod
-
-    if (hasPeriod && hasFalsyPeriod) {
-        const hasZeroStart = [period.startOffset, nextPeriod.startOffset].includes(0)
-        const hasZeroEnd = [period.endOffset, nextPeriod.endOffset].includes(0)
-        const startsNotEqual = period.startOffset !== nextPeriod.startOffset
-        const endsNotEqual = period.endOffset !== nextPeriod.endOffset
-
-        if (hasZeroStart && hasZeroEnd && startsNotEqual && endsNotEqual) {
-            return true
-        }
-    }
-
-    return false
-}
-
-function getPeriodOffset(symbolValue: string, isPeriod: boolean) {
-    const isBracketed = symbolValue.startsWith('[') && symbolValue.endsWith(']')
-    let startOffset = 0
-    let endOffset = 0
-    let periodic = 0
-
-    if (isBracketed) {
-        const [start, end] = symbolValue.slice(1, -1).split(',')
-        startOffset = parseInt(start)
-        endOffset = parseInt(end)
-    }
-    if (isPeriod) {
-        periodic = parseInt(symbolValue)
-    } else {
-        startOffset = parseInt(symbolValue)
-    }
-
-    return { startOffset, endOffset, periodic }
-}
-
-const symbols = {
-    M: {
-        isPeriod: true,
-        key: 'month',
-    },
-    m: {
-        isPeriod: false,
-        key: 'month',
-    },
-    W: {
-        isPeriod: true,
-        key: 'week',
-    },
-    w: {
-        isPeriod: false,
-        key: 'week',
-    },
-}
-
-function getSymbolInfo(symbol: string) {
-    const symbolInfo = symbols[symbol as keyof typeof symbols]
-    if (!symbolInfo) {
-        throw new Error(`Unsupported symbol: ${symbol}`)
-    }
-
-    return symbolInfo
-}
-
-function parseExpression(operation: string): [string, string] {
-    const symbol = operation.slice(-1) // Extract the last character as the symbol
-    const numberPart = operation.slice(0, -1) // Extract everything except the last character
-
-    // If the number part is empty, it means only a symbol was provided (e.g., "d")
-    if (numberPart === '') {
-        return ['1', symbol] // Default to 1 for the number part
-    } else if (numberPart === '-') {
-        return ['-1', symbol] // If the number part is just "-", it means -1
-    } else {
-        return [numberPart, symbol] // Parse the number part as an integer
     }
 }
