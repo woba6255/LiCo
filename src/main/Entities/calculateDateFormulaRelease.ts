@@ -60,53 +60,76 @@ function getYearStartEnd(year: number, timeZone: string) {
 }
 
 class PeriodBoundaries {
-    public start: Temporal.ZonedDateTime
-    public end: Temporal.ZonedDateTime
+    private _start: Temporal.ZonedDateTime
+    private _end: Temporal.ZonedDateTime
+    private _confirmedStart: Temporal.ZonedDateTime
+    private _confirmedEnd: Temporal.ZonedDateTime
+
 
     constructor(year: number, timeZone: string) {
         const startEnd = getYearStartEnd(year, timeZone)
-        this.start = startEnd.yearStart
-        this.end = startEnd.yearEnd
+        this._start = startEnd.yearStart
+        this._end = startEnd.yearEnd
+        this._confirmedStart = startEnd.yearStart
+        this._confirmedEnd = startEnd.yearEnd
     }
 
     /**
-     *  If the value is negative - calculate the start relative to the end
+     *  If the value is negative - calculate the start relative to the _end
      */
     public narrowStart(unit: string, value: number) {
         if (value === 0) return
 
         if (value < 0) {
-            this.start = this.end.add({ [`${unit}s`]: value })
+            this._start = this._end.add({ [`${unit}s`]: value })
             return
         }
 
-        this.start = this.start.add({ [`${unit}s`]: value })
+        this._start = this._start.add({ [`${unit}s`]: value })
     }
 
     /**
-     *  If the value is positive - calculate the end relative to the start
+     *  If the value is positive - calculate the end relative to the _start
      */
     public narrowEnd(unit: string, value: number) {
         if (value === 0) return
 
         if (value > 0) {
-            this.end = this.start.add({ [`${unit}s`]: value })
+            this._end = this._start.add({ [`${unit}s`]: value })
             return
         }
 
-        this.end = this.end.add({ [`${unit}s`]: value })
+        this._end = this._end.add({ [`${unit}s`]: value })
     }
 
     /**
-     * Check if the end bound is less than the start bound
+     * narrowStart and narrowEnd do not change values immediately,
+     * need call this method to apply new values.
+     * (for prevent situation when relative values are calculated from the changed values)
+     */
+    applyNewValues() {
+        this._confirmedStart = Temporal.ZonedDateTime.from(this._start)
+        this._confirmedEnd = Temporal.ZonedDateTime.from(this._end)
+    }
+
+    get start() {
+        return this._confirmedStart
+    }
+
+    get end() {
+        return this._confirmedEnd
+    }
+
+    /**
+     * Check if the _end bound is less than the _start bound
      */
     get isCollapsed() {
-        return this.end.epochNanoseconds < this.start.epochNanoseconds
+        return this._end.epochNanoseconds < this._start.epochNanoseconds
     }
 
     fromBoundaries(other: Boundaries) {
-        this.start = Temporal.ZonedDateTime.from(other.start)
-        this.end = Temporal.ZonedDateTime.from(other.end)
+        this._start = Temporal.ZonedDateTime.from(other.start)
+        this._end = Temporal.ZonedDateTime.from(other.end)
     }
 }
 
@@ -188,8 +211,10 @@ function getClosestPeriods(periodExpressions: PeriodExpression[], timeZone: stri
     periodExpressions.forEach((pe) => {
         currentBoundaries.narrowStart(pe.key, pe.startOffset)
         currentBoundaries.narrowEnd(pe.key, pe.endOffset)
+        currentBoundaries.applyNewValues()
         nextBoundaries.narrowStart(pe.key, pe.startOffset)
         nextBoundaries.narrowEnd(pe.key, pe.endOffset)
+        nextBoundaries.applyNewValues()
 
         if (pe.periodic) {
             let newCurrentBoundaries: null | Boundaries = null
